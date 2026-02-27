@@ -11,6 +11,11 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
@@ -40,6 +45,8 @@ export function AuthProvider({ children }) {
   }, []);
 
   const fetchMyList = async (userId) => {
+    if (!supabase) return;
+
     const { data, error } = await supabase
       .from('my_list')
       .select('movie_id, media_type')
@@ -51,6 +58,8 @@ export function AuthProvider({ children }) {
   };
 
   const fetchWatchHistory = async (userId) => {
+    if (!supabase) return;
+
     const { data, error } = await supabase
       .from('watch_history')
       .select('*')
@@ -70,12 +79,16 @@ export function AuthProvider({ children }) {
   };
 
   const signIn = async (email, password) => {
+    if (!supabase) throw new Error('Auth service is not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.');
+
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
     return data;
   };
 
   const signUp = async (email, password, name) => {
+    if (!supabase) throw new Error('Auth service is not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.');
+
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -86,11 +99,12 @@ export function AuthProvider({ children }) {
   };
 
   const signOut = async () => {
+    if (!supabase) return;
     await supabase.auth.signOut();
   };
 
   const toggleMyList = async (item) => {
-    if (!user) return; // Must be logged in
+    if (!supabase || !user) return; // Must be logged in
 
     const exists = myList.find(i => i.id === item.id);
 
@@ -114,7 +128,7 @@ export function AuthProvider({ children }) {
   };
 
   const saveToHistory = async (item, season = null, episode = null) => {
-    if (!user) return;
+    if (!supabase || !user) return;
     const { error } = await supabase
       .from('watch_history')
       .upsert({
