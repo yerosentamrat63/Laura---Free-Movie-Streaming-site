@@ -13,6 +13,7 @@ export default function Home({ onSelect }) {
   const [featureGrid, setFeatureGrid] = useState([]);
   const [newReleases, setNewReleases] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
 
   const { watchHistory, user } = useAuth();
   const [historyItems, setHistoryItems] = useState([]);
@@ -21,6 +22,7 @@ export default function Home({ onSelect }) {
   useEffect(() => {
     const loadContent = async () => {
       try {
+        setLoadError('');
         const [trendingRes, top10Res, tvRes] = await Promise.all([
           tmdb.getTrending('all', 'day'),
           tmdb.getTrending('movie', 'week'),
@@ -44,6 +46,7 @@ export default function Home({ onSelect }) {
         setNewReleases(tvItems.slice(3, 15));
       } catch (e) {
         console.error("Failed to fetch TMDB data", e);
+        setLoadError('We could not load movie data right now. Check your TMDB API key configuration and try again.');
       } finally {
         setLoading(false);
       }
@@ -87,7 +90,24 @@ export default function Home({ onSelect }) {
     return () => obs.disconnect();
   }, [loading, historyItems]);
 
-  if (loading || !featuredShow) return <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Loading...</div>;
+  if (loading) {
+    return <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Loading...</div>;
+  }
+
+  if (!featuredShow) {
+    return (
+      <div className="page-container" style={{ minHeight: '100vh', paddingTop: '120px' }}>
+        <div style={{ padding: '0 72px', maxWidth: '680px' }}>
+          <div className="hero-tag" style={{ marginBottom: '18px' }}>Content Unavailable</div>
+          <h1 className="hero-title" style={{ fontSize: 'clamp(42px,6vw,72px)', marginBottom: '16px' }}>Unable to load titles</h1>
+          <p className="hero-desc" style={{ maxWidth: '620px' }}>
+            {loadError || 'Movie data is temporarily unavailable.'}
+          </p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <>
