@@ -42,6 +42,10 @@ export default function Footer() {
           <option>日本語</option>
         </select>
       </div>
+      <div className="footer-attribution">
+        This product uses the TMDB API but is not endorsed or certified by TMDB. Data and imagery provided by{' '}
+        <a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer">TMDB</a>.
+      </div>
     </footer>
   );
 }

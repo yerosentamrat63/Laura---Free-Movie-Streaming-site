@@ -39,6 +39,11 @@ A full-stack Netflix replica with a Nothing.tech editorial aesthetic.
 Inspired by **Nothing.tech**: pitch black background, Space Mono monospace type,
 Bebas Neue display font, surgical red accent, noise texture overlay, stark editorial layout.
 
+## Attribution
+
+This product uses the TMDB API but is not endorsed or certified by TMDB.
+Movie/TV metadata and imagery are provided by [TMDB](https://www.themoviedb.org).
+
 ## Getting Started
 
 ```bash

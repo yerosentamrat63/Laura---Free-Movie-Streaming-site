@@ -1931,6 +1931,25 @@ footer {
   border-color: rgba(255, 255, 255, .3);
 }
 
+.footer-attribution {
+  margin-top: 16px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+  line-height: 1.8;
+}
+
+.footer-attribution a {
+  color: var(--white);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.footer-attribution a:hover {
+  color: var(--red);
+}
+
 /* ── SCROLL REVEAL ── */
 .reveal {
   opacity: 0;
