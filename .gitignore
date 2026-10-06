@@ -9,3 +9,6 @@ dist-ssr
 .vscode/
 .vercel
 dev.log
+.env*
+!.env.example
+
