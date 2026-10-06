@@ -18,6 +18,7 @@ A full-stack Netflix replica with a Nothing.tech editorial aesthetic.
 | `/new-hot` | New & Hot — tabs: Everyone's Watching / Coming Soon / Top 10 |
 | `/my-list` | My List — user's saved content |
 | `/browse` | Browse — genre cards + filtered grid |
+| `/anime` | Anime — trending / season / top rated / upcoming, genre chips, search |
 | `/signin` | Sign In / Sign Up — full auth form |
 
 ## Features
@@ -53,6 +54,8 @@ npm run dev
 ```
 
 Then open [http://localhost:5173](http://localhost:5173)
+
+Playback uses third-party embed players (CineSrc + VidNest for movies/TV; TryEmbed, MegaPlay, VidNest for anime) with automatic failover if one doesn't respond. No backend required — just `npm run dev`.
 
 > Sign in with any email + password (min 6 chars) to access the app.
 

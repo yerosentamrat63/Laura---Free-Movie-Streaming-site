@@ -1,18 +1,23 @@
 import { useState, useEffect } from 'react';
 import Footer from '../components/Footer';
 import { tmdb, mapTMDBToContent, fetchTMDB } from '../lib/tmdb';
+import { useAuth } from '../context/AuthContext';
+import { useReveal } from '../lib/useReveal';
 
 export default function NewHot({ onSelect }) {
+  const { user, toggleReminder, isReminded } = useAuth();
   const [tab, setTab] = useState('watching');
   const [watching, setWatching] = useState([]);
   const [comingSoon, setComingSoon] = useState([]);
   const [top10, setTop10] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
+        setLoadError('');
         const [dayRes, weekRes, upcomingRes] = await Promise.all([
           tmdb.getTrending('all', 'day'),
           tmdb.getTrending('all', 'week'),
@@ -24,6 +29,7 @@ export default function NewHot({ onSelect }) {
         setComingSoon(upcomingRes.results.map(i => mapTMDBToContent(i, 'movie')).slice(0, 15));
       } catch (e) {
         console.error("Failed to load New & Hot", e);
+        setLoadError('Failed to load content. Check your TMDB API key configuration.');
       } finally {
         setLoading(false);
       }
@@ -31,14 +37,13 @@ export default function NewHot({ onSelect }) {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    if (loading) return;
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-    return () => obs.disconnect();
-  }, [tab, loading]);
+  const formatDate = (dateStr) => {
+    if (!dateStr) return '';
+    const d = new Date(dateStr);
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  };
+
+  useReveal(!loading, [tab, watching, comingSoon, top10]);
 
   return (
     <div className="page-container">
@@ -69,6 +74,7 @@ export default function NewHot({ onSelect }) {
       </div>
 
       {loading && <div style={{ padding: '40px 72px' }}>Loading...</div>}
+      {loadError && <div style={{ padding: '0 72px 24px', color: 'var(--text-dim)', fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '2px' }}>{loadError}</div>}
 
       {/* EVERYONE'S WATCHING */}
       {!loading && tab === 'watching' && (
@@ -82,7 +88,7 @@ export default function NewHot({ onSelect }) {
                 </div>
               </div>
               <div className="hot-info">
-                <div className="hot-tag">{item.type === 'series' ? `Series` : `Film`}</div>
+                <div className="hot-tag">{item.type === 'tv' ? `Series` : `Film`}</div>
                 <div className="hot-title">#{i + 1} — {item.title}</div>
                 <div className="hot-desc">{item.desc?.slice(0, 160)}...</div>
               </div>
@@ -100,13 +106,25 @@ export default function NewHot({ onSelect }) {
                 <img src={item.imgWide || item.img} alt={item.title} />
               </div>
               <div className="hot-info">
-                <div className="hot-date">📅 {item.year}</div>
-                <div className="hot-tag">{item.type === 'series' ? 'Series' : 'Film'}</div>
+                <div className="hot-date">📅 {item.releaseDate ? formatDate(item.releaseDate) : item.year}</div>
+                <div className="hot-tag">{item.type === 'tv' ? 'Series' : 'Film'}</div>
                 <div className="hot-title">{item.title}</div>
                 <div className="hot-desc">{item.desc}</div>
-                <div style={{ display: 'flex', gap: '10px', marginTop: '14px' }}>
-                  <button className="btn-info" style={{ fontSize: '9px', padding: '8px 16px' }}>🔔 Remind Me</button>
-                </div>
+                {user && (
+                  <div style={{ display: 'flex', gap: '10px', marginTop: '14px' }}>
+                    <button
+                      className="btn-info"
+                      style={{
+                        fontSize: '9px', padding: '8px 16px',
+                        borderColor: isReminded(item.id) ? '#46d369' : undefined,
+                        color: isReminded(item.id) ? '#46d369' : undefined
+                      }}
+                      onClick={() => toggleReminder(item)}
+                    >
+                      {isReminded(item.id) ? '✅ Reminder Set' : '🔔 Remind Me'}
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           ))}
@@ -133,7 +151,7 @@ export default function NewHot({ onSelect }) {
                   <img src={item.img} alt={item.title} />
                   <div className="grid-card-overlay">
                     <div className="grid-card-title">{item.title}</div>
-                    <div className="grid-card-meta"><span className="match">{item.match}%</span> · {item.year}</div>
+                    <div className="grid-card-meta"><span className="match">{item.match}/100 Rating</span> · {item.year}</div>
                   </div>
                 </div>
               </div>

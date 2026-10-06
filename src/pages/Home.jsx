@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import { Carousel, Card, NumCard } from '../components/Carousel';
 import Footer from '../components/Footer';
 import { tmdb, mapTMDBToContent } from '../lib/tmdb';
+import { fetchAnimeById } from '../lib/anilist';
 import { useAuth } from '../context/AuthContext';
+import { useReveal } from '../lib/useReveal';
 
 const MARQUEE_ITEMS = ['Trending Now', 'Dark Matter', 'The Bear', 'Severance', 'Shogun', 'House of the Dragon', 'New Releases', 'Fallout', 'Succession', 'Andor', 'Silo', 'The Boys'];
 
@@ -63,15 +65,23 @@ export default function Home({ onSelect }) {
       }
       try {
         const promises = watchHistory.map(async (item) => {
+          if (item.type === 'anime') {
+            const anime = await fetchAnimeById(item.id);
+            if (item.episode) {
+              anime.match = 'Resume';
+              anime.desc = `Resume E${item.episode}`;
+            }
+            return anime;
+          }
           const details = await tmdb.getDetails(item.type, item.id);
           const mapped = mapTMDBToContent(details, item.type);
           if (item.type === 'tv' && item.season && item.episode) {
-            mapped.desc = `Resume S${item.season} E${item.episode}`;
             mapped.match = 'Resume';
+            mapped.desc = `Resume S${item.season} E${item.episode}`;
           }
           return mapped;
         });
-        const results = await Promise.all(promises);
+        const results = (await Promise.all(promises)).filter(Boolean);
         setHistoryItems(results);
       } catch (e) {
         console.error("Failed to fetch history details", e);
@@ -80,15 +90,7 @@ export default function Home({ onSelect }) {
     fetchHistoryDetails();
   }, [watchHistory]);
 
-  // Intersection observer for .reveal elements
-  useEffect(() => {
-    if (loading) return;
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-    return () => obs.disconnect();
-  }, [loading, historyItems]);
+  useReveal(!loading, [trending, top10, historyItems]);
 
   if (loading) {
     return <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Loading...</div>;
@@ -112,7 +114,7 @@ export default function Home({ onSelect }) {
   return (
     <>
       {/* HERO */}
-      <section className="hero">
+      <section className="hero home-hero">
         <div className="hero-bg" style={{ backgroundImage: `url(${featuredShow.imgWide || featuredShow.img})` }} />
         <div className="hero-gradient" />
         <div className="hero-content">
@@ -120,11 +122,11 @@ export default function Home({ onSelect }) {
           <h1 className="hero-title">{featuredShow.title}</h1>
           <p className="hero-desc">{featuredShow.desc}</p>
           <div className="hero-meta">
-            <span className="match">{featuredShow.match}% Match</span>
+            <span className="match">{featuredShow.match}/100 Rating</span>
             <span className="dot" />
             <span>{featuredShow.year}</span>
             <span className="dot" />
-            <span>{featuredShow.type === 'series' ? 'TV Series' : 'Film'}</span>
+            <span>{featuredShow.type === 'tv' ? 'TV Series' : 'Film'}</span>
           </div>
           <div className="hero-actions">
             <button className="btn-play" onClick={() => onSelect(featuredShow)}>▶ Play</button>
@@ -195,7 +197,7 @@ export default function Home({ onSelect }) {
         <div className="genre-grid">
           {['Action', 'Comedy', 'Crime', 'Drama', 'Fantasy', 'Horror', 'Mystery', 'Romance', 'Sci-Fi', 'Thriller', 'Historical', 'War', 'Documentary', 'Animation'].map(genre => (
             <div key={genre} className="genre-card">
-              <img src={`https://images.unsplash.com/photo-${genrePhoto(genre)}?w=300&q=70`} alt={genre} />
+              <img src={`https://images.unsplash.com/photo-${genrePhoto(genre)}?w=300&q=70`} alt={genre} onError={e => { e.target.style.display = 'none'; }} />
               <span>{genre}</span>
             </div>
           ))}

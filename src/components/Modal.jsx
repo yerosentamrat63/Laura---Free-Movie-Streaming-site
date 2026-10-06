@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 export default function Modal({ item, onClose }) {
   const { toggleMyList, isInList } = useAuth();
   const navigate = useNavigate();
+  const modalRef = useRef(null);
 
   useEffect(() => {
     if (item) {
@@ -21,19 +22,38 @@ export default function Modal({ item, onClose }) {
     return () => document.removeEventListener('keydown', onKey);
   }, [onClose]);
 
+  useEffect(() => {
+    if (!item) return;
+    const modal = modalRef.current;
+    if (!modal) return;
+    const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    first?.focus();
+    const trap = (e) => {
+      if (e.key !== 'Tab') return;
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last?.focus(); }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first?.focus(); }
+      }
+    };
+    document.addEventListener('keydown', trap);
+    return () => document.removeEventListener('keydown', trap);
+  }, [item]);
+
   if (!item) return null;
 
   const inList = isInList(item.id);
 
   const handlePlay = () => {
-    const mediaType = item.type === 'series' ? 'tv' : 'movie';
-    navigate(`/watch/${mediaType}/${item.id}`);
+    navigate(`/watch/${item.type}/${item.id}`);
     onClose();
   };
 
   return (
     <div className={`modal-overlay open`} onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="modal">
+      <div className="modal" ref={modalRef}>
         <div className="modal-hero">
           <img src={item.imgWide || item.img} alt={item.title} />
           <div className="modal-hero-grad" />
@@ -42,9 +62,9 @@ export default function Modal({ item, onClose }) {
         <div className="modal-body">
           <div className="modal-title">{item.title}</div>
           <div className="modal-meta">
-            <span className="match">{item.match || 0}% Match</span>
+            <span className="match">{item.match || 0}/100 Rating</span>
             <span>{item.year || ''}</span>
-            <span>{item.type === 'series' ? (item.seasons ? `${item.seasons} Season${item.seasons > 1 ? 's' : ''}` : 'Series') : (item.duration || 'Film')}</span>
+            <span>{item.type === 'tv' ? (item.seasons ? `${item.seasons} Season${item.seasons > 1 ? 's' : ''}` : 'Series') : (item.duration || 'Film')}</span>
           </div>
           <p className="modal-desc">{item.desc}</p>
           <div className="modal-actions">

@@ -22,6 +22,24 @@ export default function SearchOverlay({ open, onClose, onSelect }) {
   }, [onClose]);
 
   useEffect(() => {
+    if (!open) return;
+    const focusable = document.querySelectorAll('.search-overlay button, .search-overlay input');
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    first?.focus();
+    const trap = (e) => {
+      if (e.key !== 'Tab') return;
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last?.focus(); }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first?.focus(); }
+      }
+    };
+    document.addEventListener('keydown', trap);
+    return () => document.removeEventListener('keydown', trap);
+  }, [open]);
+
+  useEffect(() => {
     if (query.length < 2) {
       setResults([]);
       return;

@@ -27,8 +27,9 @@ export const mapTMDBToContent = (item, mediaType = 'movie') => {
     return {
         id: item.id.toString(),
         title: item.title || item.name,
-        type: isTv ? 'series' : 'film',
+        type: isTv ? 'tv' : 'movie',
         year: (item.release_date || item.first_air_date || '').split('-')[0],
+        releaseDate: item.release_date || item.first_air_date || null,
         match: Math.round((item.vote_average || 0) * 10),
         desc: item.overview,
         img: getImageUrl(item.poster_path, 'w500'),

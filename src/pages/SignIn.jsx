@@ -10,7 +10,7 @@ export default function SignIn() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const { signIn, signUp } = useAuth();
+  const { signIn, signInWithGoogle, signUp } = useAuth();
   const navigate = useNavigate();
 
   const validate = () => {
@@ -46,6 +46,17 @@ export default function SignIn() {
       setErrors({ auth: error.message });
     } finally {
       if (!success) setLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setLoading(true);
+    setErrors({});
+    try {
+      await signInWithGoogle();
+    } catch (error) {
+      setErrors({ auth: error.message });
+      setLoading(false);
     }
   };
 
@@ -109,22 +120,17 @@ export default function SignIn() {
                 {errors.password && <div className="form-error">{errors.password}</div>}
               </div>
 
-              {mode === 'signin' && (
-                <div className="form-row">
-                  <label className="form-remember">
-                    <input type="checkbox" />
-                    <span>Remember me</span>
-                  </label>
-                  <a href="#" className="form-forgot">Forgot Password?</a>
-                </div>
-              )}
-
               <button type="submit" className="btn-submit" disabled={loading}>
                 {loading ? 'Authenticating...' : mode === 'signin' ? 'Sign In →' : 'Create Account →'}
               </button>
             </form>
 
             <div className="signin-divider"><span>or</span></div>
+
+            <button type="button" className="signin-google" onClick={handleGoogleSignIn} disabled={loading}>
+              <span className="signin-google-mark">G</span>
+              Continue with Google
+            </button>
 
             <button type="button" className="signin-alt" onClick={() => navigate('/')}>
               Continue as Guest
@@ -146,9 +152,6 @@ export default function SignIn() {
                   </a>
                 </>
               )}
-              <br />
-              By signing in you agree to our{' '}
-              <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.
             </div>
           </>
         )}

@@ -3,11 +3,13 @@ import { useAuth } from '../context/AuthContext';
 import { GridCard } from '../components/Carousel';
 import Footer from '../components/Footer';
 import { tmdb, mapTMDBToContent } from '../lib/tmdb';
+import { useReveal } from '../lib/useReveal';
 
 export default function MyList({ onSelect }) {
   const { myList, user } = useAuth();
   const [listDetails, setListDetails] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [loadError, setLoadError] = useState('');
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -16,17 +18,18 @@ export default function MyList({ onSelect }) {
         return;
       }
       setLoading(true);
+      setLoadError('');
       try {
-        const detailsPromises = myList.map(async (item) => {
-          // tmdb endpoints expect 'movie' or 'tv'
-          const mediaType = item.type === 'series' ? 'tv' : 'movie';
-          const details = await tmdb.getDetails(mediaType, item.id);
-          return mapTMDBToContent(details, mediaType);
+        const tmdbItems = myList.filter(item => item.type === 'movie' || item.type === 'tv');
+        const detailsPromises = tmdbItems.map(async (item) => {
+          const details = await tmdb.getDetails(item.type, item.id);
+          return mapTMDBToContent(details, item.type);
         });
         const fullDetails = await Promise.all(detailsPromises);
         setListDetails(fullDetails);
       } catch (e) {
         console.error("Failed to fetch my list details", e);
+        setLoadError('Failed to load your list details.');
       } finally {
         setLoading(false);
       }
@@ -34,14 +37,7 @@ export default function MyList({ onSelect }) {
     fetchDetails();
   }, [myList]);
 
-  useEffect(() => {
-    if (loading) return;
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-    return () => obs.disconnect();
-  }, [listDetails, loading]);
+  useReveal(!loading, [listDetails]);
 
   return (
     <div className="page-container">
@@ -74,6 +70,7 @@ export default function MyList({ onSelect }) {
             ))}
           </div>
 
+          {loadError && <div style={{ padding: '0 72px', color: 'var(--text-dim)', fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '2px' }}>{loadError}</div>}
           <div className="content-grid reveal" style={{ marginTop: '20px' }}>
             {loading ? <div style={{ padding: '20px 72px' }}>Loading list details...</div> : listDetails.map(item => <GridCard key={item.id} item={item} onSelect={onSelect} />)}
           </div>

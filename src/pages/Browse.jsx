@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { GridCard } from '../components/Carousel';
 import Footer from '../components/Footer';
 import { tmdb, mapTMDBToContent } from '../lib/tmdb';
+import { useReveal } from '../lib/useReveal';
 
 const TMDB_GENRES = {
   Action: 28, Comedy: 35, Crime: 80, Drama: 18, Fantasy: 14, Horror: 27, Mystery: 96, Romance: 10749, 'Sci-Fi': 878, Thriller: 53, Historical: 36, War: 10752, Documentary: 99, Animation: 16
@@ -31,6 +32,7 @@ export default function Browse({ onSelect }) {
   const [activeGenre, setActiveGenre] = useState(null);
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [loadError, setLoadError] = useState('');
 
   useEffect(() => {
     const fetchGenre = async () => {
@@ -39,6 +41,7 @@ export default function Browse({ onSelect }) {
         return;
       }
       setLoading(true);
+      setLoadError('');
       try {
         const genreId = TMDB_GENRES[activeGenre];
         const [moviesRes, tvRes] = await Promise.all([
@@ -54,6 +57,7 @@ export default function Browse({ onSelect }) {
         setItems(combined);
       } catch (e) {
         console.error("Failed to fetch genre", e);
+        setLoadError('Failed to load genre content.');
       } finally {
         setLoading(false);
       }
@@ -61,13 +65,7 @@ export default function Browse({ onSelect }) {
     fetchGenre();
   }, [activeGenre]);
 
-  useEffect(() => {
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-    return () => obs.disconnect();
-  }, [items, activeGenre]);
+  useReveal(true, [items, activeGenre]);
 
   return (
     <div className="page-container">
@@ -146,7 +144,7 @@ export default function Browse({ onSelect }) {
           </div>
 
           <div style={{ padding: '12px 72px 0', fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '3px', textTransform: 'uppercase', color: 'var(--text-dim)' }}>
-            {loading ? 'Loading...' : `${items.length} top results`}
+            {loading ? 'Loading...' : loadError || `${items.length} top results`}
           </div>
 
           <div className="content-grid reveal" style={{ marginTop: '14px' }}>

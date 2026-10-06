@@ -4,12 +4,13 @@ import { useAuth } from '../context/AuthContext';
 export function Carousel({ title, subtitle, items, onSelect, wide, numbered, children }) {
   const ref = useRef(null);
   const scrollBy = (dir) => ref.current?.scrollBy({ left: dir * 480, behavior: 'smooth' });
+  const scrollToEnd = () => ref.current?.scrollTo({ left: ref.current.scrollWidth, behavior: 'smooth' });
 
   return (
     <section className="section reveal">
       <div className="section-header">
         <div className="section-title">{title}{subtitle && <span>{subtitle}</span>}</div>
-        <a href="#" className="see-all" onClick={e => e.preventDefault()}>See All</a>
+        <a href="#" className="see-all" onClick={e => { e.preventDefault(); scrollToEnd(); }}>See All</a>
       </div>
       <div className="carousel-wrap">
         <button className="carousel-arrow left" onClick={() => scrollBy(-1)}>‹</button>
@@ -38,11 +39,10 @@ export function Card({ item, onSelect, wide }) {
           <div className="card-btn" onClick={e => { e.stopPropagation(); toggleMyList(item); }}>
             {isInList(item.id) ? '✓' : '+'}
           </div>
-          <div className="card-btn">⌄</div>
         </div>
         <div className="card-meta">
-          <span className="match">{item.match}%</span>
-          {item.type === 'series' ? `${item.seasons}S` : item.duration}
+          <span className="match">{typeof item.match === 'number' ? `${item.match}/100` : item.match}</span>
+          {item.type === 'tv' ? `${item.seasons}S` : item.duration}
         </div>
       </div>
     </div>
@@ -72,7 +72,7 @@ export function GridCard({ item, onSelect }) {
           </div>
         </div>
         <div className="grid-card-meta">
-          <span className="match">{item.match}%</span>
+          <span className="match">{typeof item.match === 'number' ? `${item.match}/100` : item.match}</span>
           {item.year} · {item.genre?.[0]}
         </div>
       </div>

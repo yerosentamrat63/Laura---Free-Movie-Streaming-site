@@ -22,7 +22,7 @@ export default function Navbar({ openSearch }) {
       <NavLink to="/" className="nav-logo">laura<span>.</span></NavLink>
 
       <ul className={`nav-links ${mobileMenu ? 'open' : ''}`}>
-        {[['/', 'Home'], ['/series', 'Series'], ['/films', 'Films'], ['/new-hot', 'New & Hot'], ['/browse', 'Browse']].map(([path, label]) => (
+        {[['/', 'Home'], ['/series', 'Series'], ['/films', 'Films'], ['/anime', 'Anime'], ['/new-hot', 'New & Hot'], ['/browse', 'Browse']].map(([path, label]) => (
           <li key={path}>
             <NavLink to={path} className={({ isActive }) => isActive ? 'active' : ''} end={path === '/'} onClick={() => setMobileMenu(false)}>
               {label}

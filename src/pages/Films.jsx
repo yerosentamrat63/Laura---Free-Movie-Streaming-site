@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { GridCard } from '../components/Carousel';
-import { Carousel } from '../components/Carousel';
+import { GridCard, Carousel } from '../components/Carousel';
 import Footer from '../components/Footer';
 import { tmdb, mapTMDBToContent, fetchTMDB } from '../lib/tmdb';
+import { useReveal } from '../lib/useReveal';
 
 const GENRES = ['All', 'Action', 'Comedy', 'Crime', 'Drama', 'Historical', 'Horror', 'Romance', 'Sci-Fi', 'Thriller', 'War'];
-const SORT_OPTIONS = ['Best Match', 'Newest', 'A-Z'];
+const SORT_OPTIONS = ['Popular', 'Newest', 'A-Z'];
 
 const TMDB_MOVIE_GENRES = {
   Action: 28, Comedy: 35, Crime: 80, Drama: 18, Historical: 36, Horror: 27, Romance: 10749, 'Sci-Fi': 878, Thriller: 53, War: 10752
@@ -21,10 +21,12 @@ export default function Films({ onSelect }) {
   const [featured, setFeatured] = useState(null);
   const [spotlight, setSpotlight] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
+      setLoadError('');
       try {
         const params = {};
         if (genre !== 'All') {
@@ -57,6 +59,7 @@ export default function Films({ onSelect }) {
 
       } catch (e) {
         console.error("Failed to fetch films data", e);
+        setLoadError('Failed to load films. Check your TMDB API key configuration.');
       } finally {
         setLoading(false);
       }
@@ -64,14 +67,7 @@ export default function Films({ onSelect }) {
     fetchData();
   }, [genre, sort]);
 
-  useEffect(() => {
-    if (loading) return;
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-    return () => obs.disconnect();
-  }, [films, loading]);
+  useReveal(!loading, [films, genre, sort]);
 
   if (loading && !featured) return <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Loading...</div>;
 
@@ -88,7 +84,7 @@ export default function Films({ onSelect }) {
           {featured && (
             <>
               <div className="hero-meta">
-                <span className="match">{featured.match}% Match</span>
+                <span className="match">{featured.match}/100 Rating</span>
                 <span className="dot" />
                 <span>{featured.year}</span>
               </div>
@@ -131,7 +127,7 @@ export default function Films({ onSelect }) {
         </div>
         <select
           value={sort} onChange={e => setSort(e.target.value)}
-          style={{ fontFamily: 'var(--mono)', fontSize: '9px', letterSpacing: '2px', textTransform: 'uppercase', padding: '8px 14px', background: 'var(--gray)', border: '1px solid rgba(255,255,255,.1)', color: 'var(--text-dim)', cursor: 'none' }}
+          style={{ fontFamily: 'var(--mono)', fontSize: '9px', letterSpacing: '2px', textTransform: 'uppercase', padding: '8px 14px', background: 'var(--gray)', border: '1px solid rgba(255,255,255,.1)', color: 'var(--text-dim)' }}
         >
           {SORT_OPTIONS.map(o => <option key={o}>{o}</option>)}
         </select>
@@ -141,6 +137,9 @@ export default function Films({ onSelect }) {
         {loading ? 'Loading...' : `${films.length} films found`}
       </div>
 
+      {loadError && (
+        <div style={{ padding: '0 72px', color: 'var(--text-dim)', fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '2px' }}>{loadError}</div>
+      )}
       <div className="content-grid reveal" style={{ marginTop: '14px' }}>
         {films.map(item => <GridCard key={item.id} item={item} onSelect={onSelect} />)}
       </div>

@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react';
 import { GridCard } from '../components/Carousel';
 import Footer from '../components/Footer';
 import { tmdb, mapTMDBToContent, fetchTMDB } from '../lib/tmdb';
+import { useReveal } from '../lib/useReveal';
 
 const GENRES = ['All', 'Action', 'Comedy', 'Drama', 'Mystery', 'Sci-Fi', 'Documentary', 'Animation', 'Reality'];
-const SORT_OPTIONS = ['Best Match', 'Newest', 'A-Z'];
+const SORT_OPTIONS = ['Popular', 'Newest', 'A-Z'];
 
 const TMDB_TV_GENRES = {
   Action: 10759, Comedy: 35, Drama: 18, Mystery: 96, 'Sci-Fi': 10765, Documentary: 99, Animation: 16, Reality: 10764
@@ -17,10 +18,12 @@ export default function Series({ onSelect }) {
   const [featured, setFeatured] = useState(null);
   const [spotlight, setSpotlight] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
 
   useEffect(() => {
     const fetchShows = async () => {
       setLoading(true);
+      setLoadError('');
       try {
         const params = {};
         if (genre !== 'All') {
@@ -43,11 +46,12 @@ export default function Series({ onSelect }) {
         setShows(discoverRes.results.map(i => mapTMDBToContent(i, 'tv')));
 
         const trendingItems = trendingRes.results.map(i => mapTMDBToContent(i, 'tv'));
-        if (!featured) setFeatured(trendingItems[0]);
-        if (spotlight.length === 0) setSpotlight(trendingItems.slice(1, 4));
+        setFeatured(trendingItems[0]);
+        setSpotlight(trendingItems.slice(1, 4));
 
       } catch (e) {
         console.error("Failed to load TV Shows", e);
+        setLoadError('Failed to load TV shows. Check your TMDB API key configuration.');
       } finally {
         setLoading(false);
       }
@@ -55,14 +59,7 @@ export default function Series({ onSelect }) {
     fetchShows();
   }, [genre, sort]);
 
-  useEffect(() => {
-    if (loading) return;
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-    return () => obs.disconnect();
-  }, [shows, loading]);
+  useReveal(!loading, [shows, genre, sort]);
 
   if (loading && !featured) return <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Loading...</div>;
 
@@ -94,7 +91,7 @@ export default function Series({ onSelect }) {
         </div>
         <select
           value={sort} onChange={e => setSort(e.target.value)}
-          style={{ fontFamily: 'var(--mono)', fontSize: '9px', letterSpacing: '2px', textTransform: 'uppercase', padding: '8px 14px', background: 'var(--gray)', border: '1px solid rgba(255,255,255,.1)', color: 'var(--text-dim)', cursor: 'none' }}
+          style={{ fontFamily: 'var(--mono)', fontSize: '9px', letterSpacing: '2px', textTransform: 'uppercase', padding: '8px 14px', background: 'var(--gray)', border: '1px solid rgba(255,255,255,.1)', color: 'var(--text-dim)' }}
         >
           {SORT_OPTIONS.map(o => <option key={o}>{o}</option>)}
         </select>
@@ -106,6 +103,10 @@ export default function Series({ onSelect }) {
           {loading ? 'Loading...' : `Showing ${shows.length} series${genre !== 'All' ? ` in ${genre}` : ''}`}
         </div>
       </div>
+
+      {loadError && (
+        <div style={{ padding: '32px 72px', color: 'var(--text-dim)', fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '2px' }}>{loadError}</div>
+      )}
 
       {/* GRID */}
       <div className="content-grid reveal" style={{ marginTop: '16px' }}>

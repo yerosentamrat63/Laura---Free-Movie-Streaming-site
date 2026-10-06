@@ -14,6 +14,7 @@ import MyList from './pages/MyList';
 import Browse from './pages/Browse';
 import SignIn from './pages/SignIn';
 import Watch from './pages/Watch';
+import Anime from './pages/Anime';
 import './styles/global.css';
 
 function ProtectedRoute({ children }) {
@@ -71,7 +72,9 @@ function AppInner() {
         <Route path="/new-hot" element={<NewHot onSelect={setModal} />} />
         <Route path="/my-list" element={<ProtectedRoute><MyList onSelect={setModal} /></ProtectedRoute>} />
         <Route path="/browse" element={<Browse onSelect={setModal} />} />
+        <Route path="/anime" element={<Anime />} />
         <Route path="/watch/:mediaType/:tmdbId" element={<Watch />} />
+        <Route path="/watch/:mediaType/:tmdbId/:episode/:lang" element={<Watch />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
