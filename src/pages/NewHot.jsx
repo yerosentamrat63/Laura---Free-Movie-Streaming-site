@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { useReveal } from '../lib/useReveal';
 
 export default function NewHot({ onSelect }) {
-  const { user, toggleReminder, isReminded } = useAuth();
+  const { toggleReminder, isReminded } = useAuth();
   const [tab, setTab] = useState('watching');
   const [watching, setWatching] = useState([]);
   const [comingSoon, setComingSoon] = useState([]);
@@ -110,21 +110,19 @@ export default function NewHot({ onSelect }) {
                 <div className="hot-tag">{item.type === 'tv' ? 'Series' : 'Film'}</div>
                 <div className="hot-title">{item.title}</div>
                 <div className="hot-desc">{item.desc}</div>
-                {user && (
-                  <div style={{ display: 'flex', gap: '10px', marginTop: '14px' }}>
-                    <button
-                      className="btn-info"
-                      style={{
-                        fontSize: '9px', padding: '8px 16px',
-                        borderColor: isReminded(item.id) ? '#46d369' : undefined,
-                        color: isReminded(item.id) ? '#46d369' : undefined
-                      }}
-                      onClick={() => toggleReminder(item)}
-                    >
-                      {isReminded(item.id) ? '✅ Reminder Set' : '🔔 Remind Me'}
-                    </button>
-                  </div>
-                )}
+                <div style={{ display: 'flex', gap: '10px', marginTop: '14px' }}>
+                  <button
+                    className="btn-info"
+                    style={{
+                      fontSize: '9px', padding: '8px 16px',
+                      borderColor: isReminded(item.id) ? '#46d369' : undefined,
+                      color: isReminded(item.id) ? '#46d369' : undefined
+                    }}
+                    onClick={() => toggleReminder(item)}
+                  >
+                    {isReminded(item.id) ? '✅ Reminder Set' : '🔔 Remind Me'}
+                  </button>
+                </div>
               </div>
             </div>
           ))}

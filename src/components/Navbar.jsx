@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 export default function Navbar({ openSearch }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
+  const [confirmOut, setConfirmOut] = useState(false);
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
@@ -15,9 +16,24 @@ export default function Navbar({ openSearch }) {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  useEffect(() => {
+    if (!confirmOut) return;
+    const onKey = (e) => { if (e.key === 'Escape') setConfirmOut(false); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [confirmOut]);
+
+  const handleSignOut = async () => {
+    setConfirmOut(false);
+    setMobileMenu(false);
+    await signOut();
+    navigate('/signin');
+  };
+
   const userName = user?.user_metadata?.name || user?.email?.split('@')[0] || '';
 
   return (
+    <>
     <nav className={`nav${scrolled ? ' scrolled' : ''}`}>
       <NavLink to="/" className="nav-logo">laura<span>.</span></NavLink>
 
@@ -52,7 +68,7 @@ export default function Navbar({ openSearch }) {
             >
               {userName ? userName.charAt(0).toUpperCase() : '?'}
             </div>
-            <button className="nav-btn outline" style={{ fontSize: '9px', padding: '7px 14px' }} onClick={signOut}>
+            <button className="nav-btn outline" style={{ fontSize: '9px', padding: '7px 14px' }} onClick={() => setConfirmOut(true)}>
               Sign Out
             </button>
           </div>
@@ -61,5 +77,19 @@ export default function Navbar({ openSearch }) {
         )}
       </div>
     </nav>
+
+    {confirmOut && (
+      <div className="confirm-overlay" onClick={e => e.target === e.currentTarget && setConfirmOut(false)}>
+        <div className="confirm-box">
+          <div className="confirm-title">SIGN OUT?</div>
+          <p className="confirm-text">You'll need to sign in again to access your list, reminders and history.</p>
+          <div className="confirm-actions">
+            <button className="confirm-btn ghost" onClick={() => setConfirmOut(false)}>Cancel</button>
+            <button className="confirm-btn" onClick={handleSignOut}>Sign Out</button>
+          </div>
+        </div>
+      </div>
+    )}
+    </>
   );
 }

@@ -40,6 +40,12 @@ function AppInner() {
     }, 100);
   }, [location.pathname]);
 
+  // Close overlays on route change
+  useEffect(() => {
+    setModal(null);
+    setSearchOpen(false);
+  }, [location.pathname]);
+
   // Keyboard shortcut for search
   useEffect(() => {
     const onKey = (e) => {

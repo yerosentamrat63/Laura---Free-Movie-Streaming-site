@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 
 const AuthContext = createContext(null);
@@ -10,6 +11,15 @@ export function AuthProvider({ children }) {
   const [watchHistory, setWatchHistory] = useState([]);
   const [reminders, setReminders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  const requireAuth = () => {
+    if (!user) {
+      navigate('/signin');
+      return false;
+    }
+    return true;
+  };
 
   useEffect(() => {
     if (!supabase) {
@@ -118,7 +128,8 @@ export function AuthProvider({ children }) {
   };
 
   const toggleMyList = async (item) => {
-    if (!supabase || !user) return; // Must be logged in
+    if (!supabase) return;
+    if (!requireAuth()) return;
 
     const exists = myList.find(i => i.id === item.id);
 
@@ -169,7 +180,8 @@ export function AuthProvider({ children }) {
   };
 
   const toggleReminder = async (item) => {
-    if (!supabase || !user) return;
+    if (!supabase) return;
+    if (!requireAuth()) return;
     const exists = reminders.find(r => r.id === item.id);
     if (exists) {
       await supabase.from('reminders').delete().eq('user_id', user.id).eq('movie_id', item.id);

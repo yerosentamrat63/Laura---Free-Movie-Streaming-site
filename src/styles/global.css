@@ -2233,3 +2233,81 @@ body:not(.watch-mode) select {
     padding-right: 20px;
   }
 }
+
+/* ── CONFIRM DIALOG ── */
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(0, 0, 0, .78);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn .18s ease both;
+}
+
+.confirm-box {
+  width: min(370px, 90vw);
+  background: rgba(12, 12, 12, .96);
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-left: 2px solid var(--red);
+  padding: 34px 32px;
+  animation: fadeUp .3s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.confirm-title {
+  font-family: var(--display);
+  font-size: 30px;
+  letter-spacing: -1px;
+  margin-bottom: 12px;
+}
+
+.confirm-text {
+  font-family: var(--mono);
+  font-size: 10px;
+  line-height: 1.8;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+  margin-bottom: 26px;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.confirm-btn {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 11px 20px;
+  background: var(--red);
+  color: #fff;
+  border: 1px solid var(--red);
+  cursor: pointer;
+  transition: filter .2s;
+}
+
+.confirm-btn:hover {
+  filter: brightness(1.15);
+}
+
+.confirm-btn.ghost {
+  background: none;
+  border-color: rgba(255, 255, 255, .2);
+  color: var(--text-dim);
+}
+
+.confirm-btn.ghost:hover {
+  border-color: rgba(255, 255, 255, .45);
+  color: var(--white);
+  filter: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
