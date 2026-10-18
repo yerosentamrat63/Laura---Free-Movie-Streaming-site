@@ -7,7 +7,7 @@ export default function Footer() {
         <a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer">TMDB</a>.
       </div>
       <div className="footer-bottom">
-        <span className="footer-copy">© 2025 laura. All rights reserved.</span>
+      <span className="footer-copy">© 2026 laura.</span>
       </div>
     </footer>
   );

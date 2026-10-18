@@ -46,8 +46,8 @@ export default function MyList({ onSelect }) {
         <div style={{ fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '4px', textTransform: 'uppercase', color: 'var(--red)', marginBottom: '10px' }}>
           {user?.user_metadata?.name || user?.email}'s
         </div>
-        <h1 style={{ fontFamily: 'var(--display)', fontSize: 'clamp(52px,7vw,90px)', lineHeight: '.92', marginBottom: '14px' }}>MY LIST</h1>
-        <p style={{ fontFamily: 'var(--mono)', fontSize: '10px', color: 'var(--text-dim)', letterSpacing: '2px', textTransform: 'uppercase' }}>
+        <h1 style={{ fontFamily: 'var(--display)', fontSize: 'clamp(36px,4vw,56px)', lineHeight: '1.08', letterSpacing: '-.025em', marginBottom: '14px' }}>My List</h1>
+        <p style={{ fontFamily: 'var(--mono)', fontSize: '14px', color: 'var(--text-dim)', letterSpacing: 'normal', textTransform: 'none' }}>
           {myList.length} {myList.length === 1 ? 'title' : 'titles'} saved
         </p>
       </div>
@@ -56,7 +56,7 @@ export default function MyList({ onSelect }) {
         <div className="empty-list">
           <div className="empty-icon">📋</div>
           <div className="empty-title">Nothing here yet</div>
-          <div className="empty-sub">Browse content and hit + to add titles to your list</div>
+          <div className="empty-sub">Add titles to save them here.</div>
         </div>
       ) : (
         <>

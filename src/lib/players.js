@@ -1,4 +1,4 @@
-const RED = '%23e50914';
+const RED = '%2302F5A1';
 
 const probeCineSrc = (data) => {
   const type = data?.type;

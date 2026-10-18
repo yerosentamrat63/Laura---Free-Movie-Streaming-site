@@ -55,21 +55,21 @@ export default function NewHot({ onSelect }) {
         <div className="hero-gradient" />
         <div className="hero-content">
           <div className="hero-tag">Discover</div>
-          <h1 className="hero-title" style={{ fontSize: 'clamp(52px,7vw,90px)' }}>NEW<br />&amp; HOT</h1>
-          <p className="hero-desc">What the world is watching — plus what's coming soon.</p>
+          <h1 className="hero-title">New &amp; Hot</h1>
+          <p className="hero-desc">See what’s trending and what’s next.</p>
         </div>
       </section>
 
       {/* TAB BAR */}
       <div className="tab-bar">
         <button className={`tab${tab === 'watching' ? ' active' : ''}`} onClick={() => setTab('watching')}>
-          🔥 Everyone's Watching
+          Watching
         </button>
         <button className={`tab${tab === 'coming' ? ' active' : ''}`} onClick={() => setTab('coming')}>
-          📅 Coming Soon
+          Coming Soon
         </button>
         <button className={`tab${tab === 'top10' ? ' active' : ''}`} onClick={() => setTab('top10')}>
-          🏆 Top 10 Today
+          Top 10 Today
         </button>
       </div>
 
@@ -115,8 +115,8 @@ export default function NewHot({ onSelect }) {
                     className="btn-info"
                     style={{
                       fontSize: '9px', padding: '8px 16px',
-                      borderColor: isReminded(item.id) ? '#46d369' : undefined,
-                      color: isReminded(item.id) ? '#46d369' : undefined
+                      borderColor: isReminded(item.id) ? 'var(--red)' : undefined,
+                      color: isReminded(item.id) ? 'var(--red)' : undefined
                     }}
                     onClick={() => toggleReminder(item)}
                   >

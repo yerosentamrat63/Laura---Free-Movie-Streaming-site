@@ -51,7 +51,7 @@ export default function Series({ onSelect }) {
 
       } catch (e) {
         console.error("Failed to load TV Shows", e);
-        setLoadError('Failed to load TV shows. Check your TMDB API key configuration.');
+        setLoadError('Series are unavailable. Check your TMDB key and try again.');
       } finally {
         setLoading(false);
       }
@@ -71,12 +71,12 @@ export default function Series({ onSelect }) {
         <div className="hero-gradient" />
         <div className="hero-content">
           <div className="hero-tag">Series</div>
-          <h1 className="hero-title" style={{ fontSize: 'clamp(52px,7vw,96px)' }}>TV SERIES</h1>
-          <p className="hero-desc">The finest long-form storytelling. Binge-worthy, critically acclaimed, unforgettable.</p>
+          <h1 className="hero-title">TV Series</h1>
+          <p className="hero-desc">Find a series to watch next.</p>
           {featured && (
             <div className="hero-actions" style={{ marginTop: '28px' }}>
-              <button className="btn-play" onClick={() => onSelect(featured)}>▶ Play {featured.title}</button>
-              <button className="btn-info" onClick={() => onSelect(featured)}>ⓘ More Info</button>
+              <button className="btn-play" onClick={() => onSelect(featured)}>Play</button>
+              <button className="btn-info" onClick={() => onSelect(featured)}>Details</button>
             </div>
           )}
         </div>
@@ -99,7 +99,7 @@ export default function Series({ onSelect }) {
 
       {/* FEATURED ROW — dramatic presentation */}
       <div style={{ padding: '28px var(--pad) 0' }}>
-        <div style={{ fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '4px', textTransform: 'uppercase', color: 'var(--text-dim)', marginBottom: '12px' }}>
+        <div style={{ fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '4px', textTransform: 'none', color: 'var(--text-dim)', marginBottom: '12px' }}>
           {loading ? 'Loading...' : `Showing ${shows.length} series${genre !== 'All' ? ` in ${genre}` : ''}`}
         </div>
       </div>
@@ -117,14 +117,14 @@ export default function Series({ onSelect }) {
       {spotlight.length === 3 && (
         <div className="feature-section reveal" style={{ marginTop: '0' }}>
           <div className="section-header" style={{ padding: 0, marginBottom: '14px' }}>
-            <div className="section-title">Critically <span>ACCLAIMED</span></div>
+            <div className="section-title">Critically Acclaimed</div>
           </div>
           <div className="feature-grid">
             <div className="feature-item" onClick={() => onSelect(spotlight[0])}>
               <img src={spotlight[0].imgWide || spotlight[0].img} alt={spotlight[0].title} />
               <div className="feature-overlay">
                 <div className="feature-label">Must Watch</div>
-                <div className="feature-name">{spotlight[0].title.toUpperCase()}</div>
+                <div className="feature-name">{spotlight[0].title}</div>
                 <div className="feature-genre">Critically Acclaimed</div>
               </div>
               <div className="feature-play">▶</div>
@@ -135,7 +135,7 @@ export default function Series({ onSelect }) {
                   <img src={s.imgWide || s.img} alt={s.title} />
                   <div className="feature-overlay">
                     <div className="feature-label">Popular Series</div>
-                    <div className="feature-name">{s.title.toUpperCase()}</div>
+                  <div className="feature-name">{s.title}</div>
                     <div className="feature-genre">{s.year}</div>
                   </div>
                   <div className="feature-play">▶</div>

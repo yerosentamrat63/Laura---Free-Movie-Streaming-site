@@ -5,10 +5,10 @@ import { fetchAnimeList } from '../lib/anilist';
 import { useReveal } from '../lib/useReveal';
 
 const TABS = [
-  { id: 'trending', label: '🔥 Trending' },
-  { id: 'season', label: '🌸 Popular This Season' },
-  { id: 'top', label: '🏆 Top Rated' },
-  { id: 'upcoming', label: '📅 Upcoming' }
+  { id: 'trending', label: 'Trending' },
+  { id: 'season', label: 'This Season' },
+  { id: 'top', label: 'Top Rated' },
+  { id: 'upcoming', label: 'Upcoming' }
 ];
 
 const GENRES = ['Action', 'Romance', 'Comedy', 'Drama', 'Fantasy', 'Horror', 'Mystery', 'Sci-Fi', 'Slice of Life', 'Sports', 'Thriller', 'Mecha'];
@@ -88,8 +88,8 @@ export default function Anime() {
         <div className="hero-gradient" />
         <div className="hero-content">
           <div className="hero-tag">Now Streaming</div>
-          <h1 className="hero-title" style={{ fontSize: 'clamp(52px,7vw,90px)' }}>ANIME</h1>
-          <p className="hero-desc">Subbed &amp; dubbed episodes, updated daily. Picked straight from AniList.</p>
+          <h1 className="hero-title">Anime</h1>
+          <p className="hero-desc">Browse subbed and dubbed anime from AniList.</p>
         </div>
       </section>
 
@@ -148,12 +148,12 @@ export default function Anime() {
         </div>
       )}
 
-      {loading && <div style={{ padding: '40px var(--pad)', fontFamily: 'var(--mono)', fontSize: '11px', letterSpacing: '2px', color: 'var(--text-dim)' }}>LOADING…</div>}
+      {loading && <div style={{ padding: '40px var(--pad)', fontFamily: 'var(--mono)', fontSize: '11px', letterSpacing: '2px', color: 'var(--text-dim)' }}>Loading…</div>}
       {loadError && <div style={{ padding: '0 var(--pad) 24px', color: 'var(--text-dim)', fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '2px' }}>{loadError}</div>}
 
       {!loading && !loadError && items.length === 0 && (
         <div style={{ padding: '0 var(--pad) 48px', fontFamily: 'var(--mono)', fontSize: '11px', letterSpacing: '2px', color: 'var(--text-dim)' }}>
-          NOTHING FOUND{search ? ` FOR "${search}"` : ''}.
+          Nothing found{search ? ` for “${search}”` : ''}.
         </div>
       )}
 

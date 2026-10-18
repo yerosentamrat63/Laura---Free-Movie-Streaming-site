@@ -59,7 +59,7 @@ export default function Films({ onSelect }) {
 
       } catch (e) {
         console.error("Failed to fetch films data", e);
-        setLoadError('Failed to load films. Check your TMDB API key configuration.');
+        setLoadError('Films are unavailable. Check your TMDB key and try again.');
       } finally {
         setLoading(false);
       }
@@ -79,8 +79,8 @@ export default function Films({ onSelect }) {
         <div className="hero-gradient" />
         <div className="hero-content">
           <div className="hero-tag">Films</div>
-          <h1 className="hero-title" style={{ fontSize: 'clamp(52px,7vw,96px)' }}>CINEMA</h1>
-          <p className="hero-desc">Award-winning films, indie gems, and blockbusters — all in one place.</p>
+          <h1 className="hero-title">Cinema</h1>
+          <p className="hero-desc">Find acclaimed films and new favorites.</p>
           {featured && (
             <>
               <div className="hero-meta">
@@ -89,8 +89,8 @@ export default function Films({ onSelect }) {
                 <span>{featured.year}</span>
               </div>
               <div className="hero-actions" style={{ marginTop: '8px' }}>
-                <button className="btn-play" onClick={() => onSelect(featured)}>▶ Play {featured.title}</button>
-                <button className="btn-info" onClick={() => onSelect(featured)}>ⓘ More Info</button>
+                <button className="btn-play" onClick={() => onSelect(featured)}>Play</button>
+                <button className="btn-info" onClick={() => onSelect(featured)}>Details</button>
               </div>
             </>
           )}
@@ -111,11 +111,11 @@ export default function Films({ onSelect }) {
       </div>
 
       {/* TOP FILMS */}
-      <Carousel title="Top Rated" subtitle="FILMS" items={topFilms} onSelect={onSelect} />
+      <Carousel title="Top Rated" subtitle="Films" items={topFilms} onSelect={onSelect} />
 
       {/* NEW FILMS */}
       {newFilms.length > 0 && (
-        <Carousel title="Newly Added" subtitle="FILMS" items={newFilms} onSelect={onSelect} />
+        <Carousel title="Newly Added" subtitle="Films" items={newFilms} onSelect={onSelect} />
       )}
 
       {/* FILTERS + FULL GRID */}
@@ -148,14 +148,14 @@ export default function Films({ onSelect }) {
       {spotlight.length === 3 && (
         <div className="feature-section reveal" style={{ marginTop: '16px' }}>
           <div className="section-header" style={{ padding: 0, marginBottom: '14px' }}>
-            <div className="section-title">In The <span>SPOTLIGHT</span></div>
+            <div className="section-title">In The Spotlight</div>
           </div>
           <div className="feature-grid">
             <div className="feature-item" onClick={() => onSelect(spotlight[0])}>
               <img src={spotlight[0].imgWide || spotlight[0].img} alt={spotlight[0].title} />
               <div className="feature-overlay">
                 <div className="feature-label">Epic Must Watch</div>
-                <div className="feature-name">{spotlight[0].title.toUpperCase()}</div>
+                <div className="feature-name">{spotlight[0].title}</div>
                 <div className="feature-genre">Featured</div>
               </div>
               <div className="feature-play">▶</div>
@@ -166,7 +166,7 @@ export default function Films({ onSelect }) {
                   <img src={f.imgWide || f.img} alt={f.title} />
                   <div className="feature-overlay">
                     <div className="feature-label">Popular Now</div>
-                    <div className="feature-name">{f.title.toUpperCase()}</div>
+                  <div className="feature-name">{f.title}</div>
                     <div className="feature-genre">{f.year}</div>
                   </div>
                   <div className="feature-play">▶</div>

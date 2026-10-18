@@ -71,17 +71,17 @@ export default function SignIn() {
         {success ? (
           <div className="signin-success">
             <div className="signin-success-icon">✓</div>
-            <h3>Welcome{name ? `, ${name}` : ''}!</h3>
+            <h3>Welcome{name ? `, ${name}` : ''}</h3>
             <p style={{ fontFamily: 'var(--mono)', fontSize: '10px', color: 'var(--text-dim)', letterSpacing: '1px', marginTop: '8px' }}>
-              Taking you to the stream...
+              Taking you to your home page.
             </p>
           </div>
         ) : (
           <>
-            <div className="signin-title">{mode === 'signin' ? 'SIGN IN' : 'JOIN'}</div>
+            <div className="signin-title">{mode === 'signin' ? 'Sign In' : 'Join'}</div>
             <div className="signin-sub">{mode === 'signin' ? 'Welcome back' : 'Create your account'}</div>
 
-            {errors.auth && <div className="form-error" style={{ marginBottom: '15px', color: '#ff4444', background: '#331111', padding: '10px', borderRadius: '4px' }}>{errors.auth}</div>}
+            {errors.auth && <div className="form-error" style={{ marginBottom: '15px', color: 'var(--white)', background: 'var(--surface-alt)', padding: '10px', borderRadius: '14px' }}>{errors.auth}</div>}
 
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
               {mode === 'signup' && (
@@ -121,7 +121,7 @@ export default function SignIn() {
               </div>
 
               <button type="submit" className="btn-submit" disabled={loading}>
-                {loading ? 'Authenticating...' : mode === 'signin' ? 'Sign In →' : 'Create Account →'}
+                {loading ? 'Signing In…' : mode === 'signin' ? 'Sign In' : 'Create Account'}
               </button>
             </form>
 
@@ -133,7 +133,7 @@ export default function SignIn() {
             </button>
 
             <button type="button" className="signin-alt" onClick={() => navigate('/')}>
-              Continue as Guest
+              Browse as Guest
             </button>
 
             <div className="signin-footer">

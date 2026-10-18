@@ -219,7 +219,7 @@ export default function Watch() {
   if (loading) {
     return (
       <div className="player-loading" style={{ minHeight: '100vh' }}>
-        <div className="player-loading-text">LOADING PLAYER</div>
+        <div className="player-loading-text">Loading Player</div>
         <div className="player-loading-bar"><span /></div>
       </div>
     );
@@ -228,11 +228,11 @@ export default function Watch() {
   if (detailsError || !details) {
     return (
       <div className="player-loading" style={{ minHeight: '100vh' }}>
-        <div className="player-loading-text">PLAYER UNAVAILABLE</div>
-        <div className="player-loading-sub">Metadata could not be loaded. Check your connection.</div>
+        <div className="player-loading-text">Player Unavailable</div>
+        <div className="player-loading-sub">Details are unavailable. Check your connection.</div>
         <div style={{ display: 'flex', gap: '12px' }}>
           <button className="player-retry-btn" onClick={hardReload}>Retry</button>
-          <button className="player-retry-btn ghost" onClick={() => navigate(-1)}>Go back</button>
+          <button className="player-retry-btn ghost" onClick={() => navigate(-1)}>Back</button>
         </div>
       </div>
     );
@@ -264,7 +264,7 @@ export default function Watch() {
 
           {!healthy && !exhausted && overlay && (
             <div className="player-loading" style={{ position: 'absolute', inset: 0, zIndex: 2 }}>
-              <div className="player-loading-text">LOADING STREAM</div>
+              <div className="player-loading-text">Loading Stream</div>
               <div className="player-loading-bar"><span /></div>
             </div>
           )}
@@ -285,11 +285,11 @@ export default function Watch() {
 
           {exhausted && (
             <div className="player-loading" style={{ position: 'absolute', inset: 0, zIndex: 4 }}>
-              <div className="player-loading-text">PLAYER UNAVAILABLE</div>
-              <div className="player-loading-sub">Every player failed for this title. Check your connection or ad blocker, then retry.</div>
+              <div className="player-loading-text">Player Unavailable</div>
+              <div className="player-loading-sub">No player responded. Check your connection and retry.</div>
               <div style={{ display: 'flex', gap: '12px' }}>
                 <button className="player-retry-btn" onClick={retryChain}>Retry</button>
-                <button className="player-retry-btn ghost" onClick={() => navigate(-1)}>Go back</button>
+                <button className="player-retry-btn ghost" onClick={() => navigate(-1)}>Back</button>
               </div>
             </div>
           )}
@@ -310,7 +310,7 @@ export default function Watch() {
               )}
               {isAnime && (
                 <div className="watch-meta">
-                  Episode {animeEp} · {animeLang.toUpperCase()}
+                  Episode {animeEp} · {animeLang}
                   {details.episodes ? ` · ${details.episodes} episodes` : ''}
                 </div>
               )}

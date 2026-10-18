@@ -57,7 +57,7 @@ export default function Browse({ onSelect }) {
         setItems(combined);
       } catch (e) {
         console.error("Failed to fetch genre", e);
-        setLoadError('Failed to load genre content.');
+        setLoadError('Titles are unavailable. Try another genre.');
       } finally {
         setLoading(false);
       }
@@ -72,9 +72,9 @@ export default function Browse({ onSelect }) {
       {/* HEADER */}
       <div style={{ paddingTop: '110px', paddingBottom: '48px', paddingLeft: 'var(--pad)', paddingRight: 'var(--pad)', borderBottom: '1px solid rgba(255,255,255,.06)' }}>
         <div style={{ fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '4px', textTransform: 'uppercase', color: 'var(--red)', marginBottom: '10px' }}>Explore</div>
-        <h1 style={{ fontFamily: 'var(--display)', fontSize: 'clamp(52px,7vw,90px)', lineHeight: '.92', marginBottom: '14px' }}>BROWSE</h1>
-        <p style={{ fontFamily: 'var(--mono)', fontSize: '10px', color: 'var(--text-dim)', letterSpacing: '2px', textTransform: 'uppercase' }}>
-          Browse by genre, mood, or just explore
+        <h1 style={{ fontFamily: 'var(--display)', fontSize: 'clamp(36px,4vw,56px)', lineHeight: '1.08', letterSpacing: '-.025em', marginBottom: '14px' }}>Browse</h1>
+        <p style={{ fontFamily: 'var(--mono)', fontSize: '14px', color: 'var(--text-dim)', letterSpacing: 'normal', textTransform: 'none' }}>
+          Choose a genre to find your next title.
         </p>
       </div>
 
@@ -126,7 +126,7 @@ export default function Browse({ onSelect }) {
               onClick={() => setActiveGenre(null)}
               style={{ fontFamily: 'var(--mono)', fontSize: '9px', letterSpacing: '2px', textTransform: 'uppercase', padding: '10px 20px', background: 'none', border: '1px solid rgba(255,255,255,.2)', color: 'var(--white)', cursor: 'none', transition: 'border-color .2s' }}
             >
-              ← All Genres
+              All Genres
             </button>
           </div>
 

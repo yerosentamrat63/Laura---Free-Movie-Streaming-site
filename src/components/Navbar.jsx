@@ -55,10 +55,10 @@ export default function Navbar({ openSearch }) {
       </ul>
 
       <div className="nav-right">
-        <button className="nav-mobile-toggle" onClick={() => setMobileMenu(!mobileMenu)}>
+      <button className="nav-mobile-toggle" aria-label={mobileMenu ? 'Close menu' : 'Open menu'} onClick={() => setMobileMenu(!mobileMenu)}>
           {mobileMenu ? '✕' : '☰'}
         </button>
-        <button className="nav-search-btn" onClick={openSearch}>⌕</button>
+          <button className="nav-search-btn" aria-label="Search" title="Search" onClick={openSearch}>⌕</button>
         {user ? (
           <div className="nav-user">
             <div
@@ -81,8 +81,8 @@ export default function Navbar({ openSearch }) {
     {confirmOut && (
       <div className="confirm-overlay" onClick={e => e.target === e.currentTarget && setConfirmOut(false)}>
         <div className="confirm-box">
-          <div className="confirm-title">SIGN OUT?</div>
-          <p className="confirm-text">You'll need to sign in again to access your list, reminders and history.</p>
+          <div className="confirm-title">Sign Out?</div>
+          <p className="confirm-text">Sign in again to view your list and history.</p>
           <div className="confirm-actions">
             <button className="confirm-btn ghost" onClick={() => setConfirmOut(false)}>Cancel</button>
             <button className="confirm-btn" onClick={handleSignOut}>Sign Out</button>

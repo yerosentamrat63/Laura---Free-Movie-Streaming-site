@@ -48,7 +48,7 @@ export default function Home({ onSelect }) {
         setNewReleases(tvItems.slice(3, 15));
       } catch (e) {
         console.error("Failed to fetch TMDB data", e);
-        setLoadError('We could not load movie data right now. Check your TMDB API key configuration and try again.');
+        setLoadError('Titles are unavailable. Check your TMDB key and try again.');
       } finally {
         setLoading(false);
       }
@@ -149,17 +149,17 @@ export default function Home({ onSelect }) {
 
       {/* CONTINUE WATCHING */}
       {historyItems.length > 0 && (
-        <Carousel title="Continue Watching" subtitle={user?.user_metadata?.name?.toUpperCase() || "YOUR HISTORY"} items={historyItems} onSelect={onSelect} />
+      <Carousel title="Continue Watching" subtitle={user?.user_metadata?.name || 'Your History'} items={historyItems} onSelect={onSelect} />
       )}
 
       {/* TOP 10 */}
-      <Carousel title="Top 10" subtitle="THIS WEEK" items={top10} onSelect={onSelect} numbered />
+      <Carousel title="Top 10" subtitle="This Week" items={top10} onSelect={onSelect} numbered />
 
       {/* EDITOR'S PICKS FEATURE GRID */}
       {featureGrid.length === 3 && (
         <div className="feature-section reveal">
           <div className="section-header" style={{ padding: 0, marginBottom: '14px' }}>
-            <div className="section-title">Editor's <span>PICKS</span></div>
+            <div className="section-title">Editor's Picks</div>
           </div>
           <div className="feature-grid">
             <div className="feature-item" onClick={() => onSelect(featureGrid[0])}>
@@ -189,7 +189,7 @@ export default function Home({ onSelect }) {
       )}
 
       {/* TRENDING NOW */}
-      <Carousel title="Trending" subtitle="NOW" items={trending} onSelect={onSelect} />
+      <Carousel title="Trending" subtitle="Now" items={trending} onSelect={onSelect} />
 
       {/* CATEGORIES */}
       <div className="categories reveal">
@@ -205,7 +205,7 @@ export default function Home({ onSelect }) {
       </div>
 
       {/* NEW THIS MONTH */}
-      <Carousel title="New Releases" subtitle="SHOWS" items={newReleases} onSelect={onSelect} />
+      <Carousel title="New Releases" subtitle="Shows" items={newReleases} onSelect={onSelect} />
 
       <Footer />
     </>

@@ -457,7 +457,7 @@ body::before {
 }
 
 .hero-meta .match {
-  color: #46d369;
+  color: var(--red);
 }
 
 .hero-meta .dot {
@@ -784,7 +784,7 @@ body::before {
 }
 
 .card-meta .match {
-  color: #46d369;
+  color: var(--red);
   margin-right: 6px;
 }
 
@@ -1154,7 +1154,7 @@ body::before {
 }
 
 .modal-meta .match {
-  color: #46d369;
+  color: var(--red);
 }
 
 .modal-desc {
@@ -1191,8 +1191,8 @@ body::before {
 }
 
 .modal-list-btn.in-list {
-  border-color: #46d369;
-  color: #46d369;
+  border-color: var(--red);
+  color: var(--red);
 }
 
 /* ── SEARCH OVERLAY ── */
@@ -1454,7 +1454,7 @@ body::before {
 }
 
 .grid-card-meta .match {
-  color: #46d369;
+  color: var(--red);
 }
 
 /* ── NEW & HOT ── */
@@ -1594,7 +1594,7 @@ body::before {
 .hot-date {
   font-family: var(--mono);
   font-size: 9px;
-  color: #46d369;
+  color: var(--red);
   letter-spacing: 2px;
   text-transform: uppercase;
   margin-bottom: 10px;
@@ -2721,6 +2721,75 @@ html.no-custom-cursor .card {
   box-shadow: var(--shadow-raised);
 }
 
+/* Livery voice styling */
+button,
+.nav-links a,
+.hero-tag,
+.hero-meta,
+.marquee-item,
+.section-title,
+.categories-heading,
+.filter-tab,
+.watch-back,
+.watch-field-label,
+.signin-title,
+.form-label,
+.player-loading-text,
+.player-retry-btn {
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+h1,
+h2,
+h3,
+.hero-title,
+.section-title,
+.categories-heading,
+.empty-title,
+.hot-title,
+.watch-title,
+.modal-title,
+.feature-name,
+.confirm-title,
+.signin-title {
+  font-family: var(--display);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  text-transform: none;
+}
+
+.hero-desc,
+.modal-desc,
+.hot-desc,
+.watch-meta,
+.signin-sub,
+.signin-footer,
+.footer-attribution,
+.footer-copy {
+  font-family: var(--body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: normal;
+}
+
+.categories-heading,
+.feature-name,
+.hot-title,
+.tab-bar .tab {
+  font-size: 17px;
+}
+
+.watch-title,
+.modal-title,
+.empty-title,
+.confirm-title,
+.signin-title {
+  font-size: 24px;
+  line-height: 1.33;
+}
+
 @media (max-width: 420px) {
   :root {
     --pad: 14px;
@@ -2973,8 +3042,8 @@ button {
 .hero-title {
   max-width: 18ch;
   font-family: var(--display);
-  font-size: clamp(36px, 4vw, 56px);
-  line-height: 1.08;
+  font-size: 24px;
+  line-height: 1.33;
   letter-spacing: -0.025em;
   font-weight: 600;
 }
@@ -3027,7 +3096,7 @@ button {
 }
 
 .section-title {
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .section-title span {
@@ -3096,7 +3165,7 @@ button {
   }
 
   .hero-title {
-    font-size: clamp(32px, 10vw, 44px);
+    font-size: 24px;
   }
 
   .carousel-section,

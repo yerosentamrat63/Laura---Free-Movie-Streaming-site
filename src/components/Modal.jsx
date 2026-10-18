@@ -68,7 +68,7 @@ export default function Modal({ item, onClose }) {
           </div>
           <p className="modal-desc">{item.desc}</p>
           <div className="modal-actions">
-            <button className="btn-play" onClick={handlePlay}>▶ Play</button>
+            <button className="btn-play" onClick={handlePlay}>Play</button>
             <button
               className={`modal-list-btn${inList ? ' in-list' : ''}`}
               onClick={() => toggleMyList(item)}
