@@ -533,58 +533,6 @@ body::before {
   transform: translateY(-2px);
 }
 
-/* ── MARQUEE ── */
-.marquee-section {
-  overflow: hidden;
-  white-space: nowrap;
-  border-top: 1px solid rgba(255, 255, 255, .06);
-  border-bottom: 1px solid rgba(255, 255, 255, .06);
-  padding: 24px 0;
-}
-
-.marquee-track {
-  display: inline-flex;
-  animation: marquee 28s linear infinite;
-}
-
-.marquee-track:hover {
-  animation-play-state: paused;
-}
-
-@keyframes marquee {
-  from {
-    transform: translateX(0)
-  }
-
-  to {
-    transform: translateX(-50%)
-  }
-}
-
-.marquee-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 16px;
-  padding: 0 28px;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--text-dim);
-}
-
-.marquee-item .dot {
-  width: 4px;
-  height: 4px;
-  background: var(--red);
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.marquee-item strong {
-  color: var(--white);
-}
-
 /* ── SECTION ── */
 .section {
   padding: 36px 0;
@@ -2841,7 +2789,6 @@ button,
 .nav-links a,
 .hero-tag,
 .hero-meta,
-.marquee-item,
 .section-title,
 .categories-heading,
 .filter-tab,
@@ -3225,8 +3172,7 @@ button {
 
 .hero-tag,
 .hero-meta,
-.section-subtitle,
-.marquee-item {
+.section-subtitle {
   font-family: var(--body);
   letter-spacing: 0;
   text-transform: none;
@@ -3789,6 +3735,11 @@ select:focus-visible {
 }
 
 @media (max-width: 600px) {
+  .modal {
+    width: calc(100vw - 32px);
+    max-height: calc(100dvh - 32px);
+  }
+
   .watch-tv-selectors {
     grid-column: 1 / -1;
     width: 100%;

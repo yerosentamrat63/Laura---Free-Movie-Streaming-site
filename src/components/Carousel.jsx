@@ -5,13 +5,11 @@ import { useTapReveal, isTouchDevice } from '../lib/useTapReveal';
 export function Carousel({ title, subtitle, items, onSelect, wide, numbered, children }) {
   const ref = useRef(null);
   const scrollBy = (dir) => ref.current?.scrollBy({ left: dir * 480, behavior: 'smooth' });
-  const scrollToEnd = () => ref.current?.scrollTo({ left: ref.current.scrollWidth, behavior: 'smooth' });
 
   return (
     <section className="section reveal">
       <div className="section-header">
         <div className="section-title">{title}{subtitle && <span>{subtitle}</span>}</div>
-        <a href="#" className="see-all" onClick={e => { e.preventDefault(); scrollToEnd(); }}>See All</a>
       </div>
       <div className="carousel-wrap">
         <button className="carousel-arrow left" onClick={() => scrollBy(-1)}>‹</button>

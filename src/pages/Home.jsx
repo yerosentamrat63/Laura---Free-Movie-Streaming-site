@@ -6,8 +6,6 @@ import { fetchAnimeById } from '../lib/anilist';
 import { useAuth } from '../context/AuthContext';
 import { useReveal } from '../lib/useReveal';
 
-const MARQUEE_ITEMS = ['Trending Now', 'Dark Matter', 'The Bear', 'Severance', 'Shogun', 'House of the Dragon', 'New Releases', 'Fallout', 'Succession', 'Andor', 'Silo', 'The Boys'];
-
 export default function Home({ onSelect }) {
   const [featuredShow, setFeaturedShow] = useState(null);
   const [trending, setTrending] = useState([]);
@@ -134,18 +132,6 @@ export default function Home({ onSelect }) {
           </div>
         </div>
       </section>
-
-      {/* MARQUEE */}
-      <div className="marquee-section">
-        <div className="marquee-track">
-          {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
-            <div key={i} className="marquee-item">
-              <span className="dot" />
-              {i % 7 === 0 ? <strong>{item}</strong> : item}
-            </div>
-          ))}
-        </div>
-      </div>
 
       {/* CONTINUE WATCHING */}
       {historyItems.length > 0 && (

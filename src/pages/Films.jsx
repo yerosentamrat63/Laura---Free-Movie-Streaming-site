@@ -97,19 +97,6 @@ export default function Films({ onSelect }) {
         </div>
       </section>
 
-      {/* MARQUEE */}
-      <div className="marquee-section">
-        <div className="marquee-track">
-          {['Now Playing', 'Top Rated', 'Blockbusters', 'Award Winners', 'Indie Darlings', 'Action Packed', 'Sci-Fi Epics', 'Comedy Gold', 'Thrillers',
-            'Now Playing', 'Top Rated', 'Blockbusters', 'Award Winners', 'Indie Darlings', 'Action Packed', 'Sci-Fi Epics', 'Comedy Gold', 'Thrillers'].map((item, i) => (
-              <div key={i} className="marquee-item">
-                <span className="dot" />
-                {i % 8 === 0 ? <strong>{item}</strong> : item}
-              </div>
-            ))}
-        </div>
-      </div>
-
       {/* TOP FILMS */}
       <Carousel title="Top Rated" subtitle="Films" items={topFilms} onSelect={onSelect} />
 
