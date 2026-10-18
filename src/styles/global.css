@@ -3787,3 +3787,32 @@ select:focus-visible {
   font-size: 16px;
   line-height: 1.35;
 }
+
+@media (max-width: 600px) {
+  .watch-tv-selectors {
+    grid-column: 1 / -1;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .watch-tv-selectors .watch-field {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .watch-picker-trigger {
+    width: 100%;
+    min-width: 0;
+    gap: 8px;
+  }
+
+  .watch-season-popover {
+    width: min(208px, calc(100vw - 32px));
+  }
+
+  .watch-episode-popover {
+    right: 0;
+    left: auto;
+    width: min(258px, calc(100vw - 32px));
+  }
+}
