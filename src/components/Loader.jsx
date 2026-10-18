@@ -1,19 +1,39 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function Loader() {
-  const [hidden, setHidden] = useState(false);
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const [hidden, setHidden] = useState(prefersReducedMotion);
+  const videoRef = useRef(null);
 
   useEffect(() => {
-    const t = setTimeout(() => setHidden(true), 1600);
-    return () => clearTimeout(t);
-  }, []);
+    if (prefersReducedMotion) return;
+
+    const timeout = window.setTimeout(() => setHidden(true), 18000);
+    videoRef.current?.play().catch(() => setHidden(true));
+
+    return () => window.clearTimeout(timeout);
+  }, [prefersReducedMotion]);
+
+  const finishIntro = () => {
+    videoRef.current?.pause();
+    setHidden(true);
+  };
 
   return (
-    <div className={`loader${hidden ? ' hidden' : ''}`}>
-      <div className="loader-logo">laura<span>.</span></div>
-      <div className="loader-bar">
-        <div className="loader-bar-fill" />
-      </div>
+    <div className={`loader${hidden ? ' hidden' : ''}`} aria-hidden={hidden}>
+      <video
+        ref={videoRef}
+        className="loader-video"
+        src="/laura-intro.mp4"
+        poster="/laura-intro-poster.jpg"
+        muted
+        playsInline
+        preload="auto"
+        onEnded={finishIntro}
+        onError={finishIntro}
+        aria-hidden="true"
+      />
+      <button className="loader-skip" type="button" onClick={finishIntro}>Skip intro</button>
     </div>
   );
 }

@@ -151,66 +151,54 @@ body::before {
 .loader {
   position: fixed;
   inset: 0;
+  overflow: hidden;
   background: var(--black);
   z-index: 99998;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  gap: 28px;
-  transition: opacity .7s ease, visibility .7s;
+  transition: opacity .4s ease, visibility .4s;
 }
 
 .loader.hidden {
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
 }
 
-.loader-logo {
-  font-family: var(--mono);
-  font-size: 36px;
-  font-weight: 700;
-  letter-spacing: -2px;
-  animation: pulse 1.4s ease-in-out infinite;
+.loader-video {
+  display: block;
+  width: 100%;
+  max-height: 100dvh;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
 }
 
-.loader-logo span {
+.loader-skip {
+  position: absolute;
+  right: max(20px, env(safe-area-inset-right));
+  bottom: max(20px, env(safe-area-inset-bottom));
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid rgba(245, 247, 246, .28);
+  border-radius: var(--radius-control);
+  background: rgba(7, 25, 30, .82);
+  color: var(--white);
+  font-family: var(--body);
+  font-size: 13px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
+
+.loader-skip:hover {
+  border-color: var(--red);
   color: var(--red);
 }
 
-.loader-bar {
-  width: 180px;
-  height: 1px;
-  background: rgba(255, 255, 255, .08);
-  overflow: hidden;
-  position: relative;
-}
-
-.loader-bar-fill {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 0;
-  background: var(--red);
-  animation: loadFill 1.4s ease forwards;
-}
-
-@keyframes loadFill {
-  to {
-    width: 100%;
-  }
-}
-
-@keyframes pulse {
-
-  0%,
-  100% {
-    opacity: 1
-  }
-
-  50% {
-    opacity: .25
+@media (prefers-reduced-motion: reduce) {
+  .loader,
+  .loader-skip {
+    transition: none;
   }
 }
 
