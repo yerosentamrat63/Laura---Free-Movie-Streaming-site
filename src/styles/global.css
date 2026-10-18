@@ -1,15 +1,20 @@
 :root {
-  --black: #080808;
-  --white: #f5f5f0;
-  --red: #e50914;
-  --red-dark: #b0060f;
-  --gray: #141414;
-  --gray-mid: #222;
-  --gray-light: #333;
-  --text-dim: #888;
-  --mono: 'Space Mono', monospace;
-  --display: 'Bebas Neue', sans-serif;
-  --body: 'DM Sans', sans-serif;
+  --black: #07191e;
+  --white: #f5f7f6;
+  --red: #02f5a1;
+  --red-dark: #00c982;
+  --gray: #10272b;
+  --gray-mid: #173238;
+  --gray-light: #294349;
+  --text-dim: #a7b8b7;
+  --mono: 'Geist Mono', monospace;
+  --display: 'Inter', sans-serif;
+  --body: 'Geist Mono', monospace;
+  --surface-alt: #0c2227;
+  --border: #294044;
+  --radius-card: 14px;
+  --radius-control: 9999px;
+  --shadow-raised: 0 8px 20px rgba(0, 0, 0, .34);
   --nav-h: 68px;
   --pad: 72px;
 }
