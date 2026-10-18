@@ -24,6 +24,7 @@ export default function Watch() {
 
   const [seasonData, setSeasonData] = useState(null);
   const [seasonError, setSeasonError] = useState(false);
+  const [openPicker, setOpenPicker] = useState(null);
 
   const [providerIndex, setProviderIndex] = useState(0);
   const [frameUrl, setFrameUrl] = useState('');
@@ -37,6 +38,21 @@ export default function Watch() {
   const healthyRef = useRef(false);
   const suppressUrl = useRef(false);
   const failoverRef = useRef(() => {});
+  const pickerRef = useRef(null);
+
+  useEffect(() => {
+    const closePicker = (event) => {
+      if (event.type === 'keydown' && event.key !== 'Escape') return;
+      if (event.type === 'pointerdown' && pickerRef.current?.contains(event.target)) return;
+      setOpenPicker(null);
+    };
+    document.addEventListener('pointerdown', closePicker);
+    document.addEventListener('keydown', closePicker);
+    return () => {
+      document.removeEventListener('pointerdown', closePicker);
+      document.removeEventListener('keydown', closePicker);
+    };
+  }, []);
 
   const providers = useMemo(
     () => getProviders({ mediaType, tmdbId, season, episode: isAnime ? animeEp : episode, lang: animeLang }),
@@ -318,36 +334,71 @@ export default function Watch() {
 
             <div className="watch-controls">
               {mediaType === 'tv' && (
-                <>
-                  <div className="watch-field">
+                <div className="watch-tv-selectors" ref={pickerRef}>
+                  <div className="watch-field watch-picker">
                     <div className="watch-field-label">Season</div>
-                    <select
-                      className="watch-select"
-                      value={season}
-                      onChange={(e) => setSeason(parseInt(e.target.value))}
+                    <button
+                      type="button"
+                      className="watch-select watch-picker-trigger"
+                      aria-expanded={openPicker === 'season'}
+                      onClick={() => setOpenPicker(openPicker === 'season' ? null : 'season')}
                     >
-                      {details.seasons?.filter(s => s.season_number > 0).map(s => (
-                        <option key={s.season_number} value={s.season_number}>Season {s.season_number}</option>
-                      ))}
-                    </select>
+                      Season {season}<span className="watch-picker-chevron" aria-hidden="true">⌄</span>
+                    </button>
+                    {openPicker === 'season' && (
+                      <div className="watch-picker-popover watch-season-popover" role="group" aria-label="Choose season">
+                        {details.seasons?.filter(item => item.season_number > 0).map(item => (
+                          <button
+                            key={item.season_number}
+                            type="button"
+                            className={`watch-picker-cell${item.season_number === season ? ' active' : ''}`}
+                            aria-pressed={item.season_number === season}
+                            onClick={() => {
+                              setSeason(item.season_number);
+                              setOpenPicker(null);
+                            }}
+                          >
+                            {item.season_number}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
-                  <div className="watch-field">
+                  <div className="watch-field watch-picker">
                     <div className="watch-field-label">Episode</div>
-                    <select
-                      className="watch-select"
-                      value={episode}
-                      disabled={!seasonData?.episodes}
-                      onChange={(e) => setEpisode(parseInt(e.target.value))}
+                    <button
+                      type="button"
+                      className="watch-select watch-picker-trigger"
+                      aria-expanded={openPicker === 'episode'}
+                      disabled={!seasonData?.episodes?.length}
+                      onClick={() => setOpenPicker(openPicker === 'episode' ? null : 'episode')}
                     >
-                      {seasonData?.episodes
-                        ? seasonData.episodes.map(e => (
-                            <option key={e.episode_number} value={e.episode_number}>Ep {e.episode_number}</option>
-                          ))
-                        : <option value={episode}>—</option>}
-                    </select>
+                      Episode {episode}<span className="watch-picker-chevron" aria-hidden="true">⌄</span>
+                    </button>
+                    {openPicker === 'episode' && seasonData?.episodes?.length > 0 && (
+                      <div className="watch-picker-popover watch-episode-popover" role="group" aria-label={`Choose an episode from season ${season}`}>
+                        {seasonData.episodes.map(item => (
+                          <button
+                            key={item.episode_number}
+                            type="button"
+                            className={`watch-picker-cell${item.episode_number === episode ? ' active' : ''}`}
+                            aria-label={`Episode ${item.episode_number}: ${item.name || 'Untitled episode'}`}
+                            aria-pressed={item.episode_number === episode}
+                            title={item.name || `Episode ${item.episode_number}`}
+                            onClick={() => {
+                              setEpisode(item.episode_number);
+                              setOpenPicker(null);
+                            }}
+                          >
+                            {item.episode_number}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                </>
+                  {seasonError && <span className="watch-picker-error">Episode list unavailable</span>}
+                </div>
               )}
 
               {isAnime && (
@@ -410,10 +461,6 @@ export default function Watch() {
                 </div>
               </div>
 
-              <div className="watch-field">
-                <div className="watch-field-label">Player</div>
-                <button onClick={hardReload} className="watch-mini-btn">Reload</button>
-              </div>
             </div>
           </div>
         </div>

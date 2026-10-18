@@ -68,7 +68,7 @@ export default function Navbar({ openSearch }) {
             >
               {userName ? userName.charAt(0).toUpperCase() : '?'}
             </div>
-            <button className="nav-btn outline" style={{ fontSize: '9px', padding: '7px 14px' }} onClick={() => setConfirmOut(true)}>
+            <button className="nav-btn outline" onClick={() => setConfirmOut(true)}>
               Sign Out
             </button>
           </div>

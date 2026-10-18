@@ -93,40 +93,21 @@ export default function Anime() {
         </div>
       </section>
 
-      <div className="filter-bar" style={{ padding: '0 var(--pad)', display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap', marginBottom: '24px' }}>
+      <div className="filter-bar anime-filter-bar">
         <input
+          className="anime-search"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Search anime…"
-          style={{
-            flex: '1 1 240px',
-            maxWidth: '360px',
-            background: 'var(--gray)',
-            border: '1px solid rgba(255,255,255,0.1)',
-            color: 'white',
-            padding: '10px 14px',
-            fontFamily: 'var(--mono)',
-            fontSize: '11px',
-            letterSpacing: '1px',
-            outline: 'none'
-          }}
         />
-        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+        <div className="anime-genres">
           {GENRES.map(g => (
             <button
               key={g}
+              type="button"
+              className={`anime-genre-chip${genre === g ? ' active' : ''}`}
+              aria-pressed={genre === g}
               onClick={() => setGenre(genre === g ? '' : g)}
-              style={{
-                background: genre === g ? 'var(--red)' : 'none',
-                border: `1px solid ${genre === g ? 'var(--red)' : 'rgba(255,255,255,0.15)'}`,
-                color: genre === g ? '#fff' : 'var(--text-dim)',
-                padding: '7px 12px',
-                fontFamily: 'var(--mono)',
-                fontSize: '9px',
-                letterSpacing: '1.5px',
-                textTransform: 'uppercase',
-                cursor: 'pointer'
-              }}
             >
               {g}
             </button>

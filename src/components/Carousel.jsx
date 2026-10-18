@@ -34,13 +34,22 @@ export function Card({ item, onSelect, wide }) {
   return (
     <div
       ref={ref}
-      className={`card${wide ? ' wide' : ''}${open ? ' open' : ''}`}
+      className={`card${wide ? ' wide' : ''}${open ? ' open' : ''}${item.img ? '' : ' image-failed'}`}
+      data-title={item.title}
       onClick={() => {
         if (isTouchDevice() && !open) { setOpen(true); return; }
         onSelect(item);
       }}
     >
-      <img src={item.img} alt={item.title} loading="lazy" />
+      {item.img && <img
+        src={item.img}
+        alt={item.title}
+        loading="lazy"
+        onError={e => {
+          e.currentTarget.style.display = 'none';
+          e.currentTarget.parentElement.classList.add('image-failed');
+        }}
+      />}
       <div className="card-overlay">
         <div className="card-title">{item.title}</div>
         <div className="card-actions">
@@ -72,13 +81,22 @@ export function GridCard({ item, onSelect }) {
   return (
     <div
       ref={ref}
-      className={`grid-card${open ? ' open' : ''}`}
+      className={`grid-card${open ? ' open' : ''}${item.img ? '' : ' image-failed'}`}
+      data-title={item.title}
       onClick={() => {
         if (isTouchDevice() && !open) { setOpen(true); return; }
         onSelect(item);
       }}
     >
-      <img src={item.img} alt={item.title} loading="lazy" />
+      {item.img && <img
+        src={item.img}
+        alt={item.title}
+        loading="lazy"
+        onError={e => {
+          e.currentTarget.style.display = 'none';
+          e.currentTarget.parentElement.classList.add('image-failed');
+        }}
+      />}
       <div className="grid-card-overlay">
         <div className="grid-card-title">{item.title}</div>
         <div className="grid-card-actions">
