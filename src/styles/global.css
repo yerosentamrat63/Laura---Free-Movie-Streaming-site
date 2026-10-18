@@ -2587,6 +2587,68 @@ html.no-custom-cursor .card {
   }
 }
 
+/* Livery motion */
+.btn-play:hover,
+.btn-info:hover,
+.btn-red:hover,
+.nav-btn:hover,
+.grid-card:hover,
+.card:hover,
+.feature-item:hover {
+  transform: none;
+}
+
+.btn-play,
+.btn-info,
+.btn-red,
+.nav-btn,
+.nav-links a,
+.nav-search-btn,
+.grid-card,
+.card,
+.feature-item,
+.tab,
+.watch-mini-btn,
+.modal,
+.confirm-box {
+  transition-duration: 130ms;
+  transition-timing-function: ease;
+}
+
+.reveal,
+.hero-content {
+  transition-duration: 300ms;
+}
+
+@keyframes livery-list-cycle {
+  0%, 8% { opacity: 0; transform: translateY(6px); }
+  14%, 82% { opacity: 1; transform: translateY(0); }
+  90%, 100% { opacity: 0; transform: translateY(-5px); }
+}
+
+.feature-label {
+  animation: livery-list-cycle 4930ms ease-in-out infinite;
+}
+
+.feature-item:nth-child(1) .feature-label { animation-delay: 0ms; }
+.feature-item:nth-child(2) .feature-label { animation-delay: 40ms; }
+.feature-item:nth-child(3) .feature-label { animation-delay: 80ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 @media (max-width: 420px) {
   :root {
     --pad: 14px;
