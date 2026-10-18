@@ -69,6 +69,7 @@ export function NumCard({ item, num, onSelect }) {
     <div className="num-card" onClick={() => onSelect(item)}>
       <span className="num">{num}</span>
       <img src={item.img} alt={item.title} loading="lazy" />
+      <span className="num-card-title">{item.title}</span>
     </div>
   );
 }
