@@ -99,7 +99,7 @@ export default function Home({ onSelect }) {
   if (!featuredShow) {
     return (
       <div className="page-container" style={{ minHeight: '100vh', paddingTop: '120px' }}>
-        <div style={{ padding: '0 72px', maxWidth: '680px' }}>
+        <div style={{ padding: '0 var(--pad)', maxWidth: '680px' }}>
           <div className="hero-tag" style={{ marginBottom: '18px' }}>Content Unavailable</div>
           <h1 className="hero-title" style={{ fontSize: 'clamp(42px,6vw,72px)', marginBottom: '16px' }}>Unable to load titles</h1>
           <p className="hero-desc" style={{ maxWidth: '620px' }}>
@@ -122,7 +122,7 @@ export default function Home({ onSelect }) {
           <h1 className="hero-title">{featuredShow.title}</h1>
           <p className="hero-desc">{featuredShow.desc}</p>
           <div className="hero-meta">
-            <span className="match">{featuredShow.match}/100 Rating</span>
+            <span className="match">{(featuredShow.match / 10).toFixed(1)}/10 Rating</span>
             <span className="dot" />
             <span>{featuredShow.year}</span>
             <span className="dot" />

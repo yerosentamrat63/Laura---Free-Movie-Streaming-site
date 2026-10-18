@@ -83,7 +83,7 @@ export default function Series({ onSelect }) {
       </section>
 
       {/* FILTERS */}
-      <div style={{ padding: '32px 72px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
+      <div style={{ padding: '32px var(--pad) 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
         <div className="filter-bar" style={{ padding: 0 }}>
           {GENRES.map(g => (
             <button key={g} className={`filter-tab${genre === g ? ' active' : ''}`} onClick={() => setGenre(g)}>{g}</button>
@@ -98,14 +98,14 @@ export default function Series({ onSelect }) {
       </div>
 
       {/* FEATURED ROW — dramatic presentation */}
-      <div style={{ padding: '28px 72px 0' }}>
+      <div style={{ padding: '28px var(--pad) 0' }}>
         <div style={{ fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '4px', textTransform: 'uppercase', color: 'var(--text-dim)', marginBottom: '12px' }}>
           {loading ? 'Loading...' : `Showing ${shows.length} series${genre !== 'All' ? ` in ${genre}` : ''}`}
         </div>
       </div>
 
       {loadError && (
-        <div style={{ padding: '32px 72px', color: 'var(--text-dim)', fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '2px' }}>{loadError}</div>
+        <div style={{ padding: '32px var(--pad)', color: 'var(--text-dim)', fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '2px' }}>{loadError}</div>
       )}
 
       {/* GRID */}

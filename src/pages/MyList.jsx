@@ -42,7 +42,7 @@ export default function MyList({ onSelect }) {
   return (
     <div className="page-container">
       {/* PAGE HERO */}
-      <div style={{ paddingTop: '120px', paddingBottom: '48px', paddingLeft: '72px', paddingRight: '72px', borderBottom: '1px solid rgba(255,255,255,.06)' }}>
+      <div style={{ paddingTop: '120px', paddingBottom: '48px', paddingLeft: 'var(--pad)', paddingRight: 'var(--pad)', borderBottom: '1px solid rgba(255,255,255,.06)' }}>
         <div style={{ fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '4px', textTransform: 'uppercase', color: 'var(--red)', marginBottom: '10px' }}>
           {user?.user_metadata?.name || user?.email}'s
         </div>
@@ -61,7 +61,7 @@ export default function MyList({ onSelect }) {
       ) : (
         <>
           {/* SORT BAR */}
-          <div style={{ padding: '24px 72px 0', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+          <div style={{ padding: '24px var(--pad) 0', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
             <span style={{ fontFamily: 'var(--mono)', fontSize: '9px', letterSpacing: '2px', textTransform: 'uppercase', color: 'var(--text-dim)' }}>Sort by:</span>
             {['Date Added', 'A-Z', 'Type'].map(opt => (
               <button key={opt} style={{ fontFamily: 'var(--mono)', fontSize: '9px', letterSpacing: '2px', textTransform: 'uppercase', padding: '6px 14px', background: 'none', border: '1px solid rgba(255,255,255,.1)', color: 'var(--text-dim)', cursor: 'none' }}>
@@ -70,9 +70,9 @@ export default function MyList({ onSelect }) {
             ))}
           </div>
 
-          {loadError && <div style={{ padding: '0 72px', color: 'var(--text-dim)', fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '2px' }}>{loadError}</div>}
+          {loadError && <div style={{ padding: '0 var(--pad)', color: 'var(--text-dim)', fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '2px' }}>{loadError}</div>}
           <div className="content-grid reveal" style={{ marginTop: '20px' }}>
-            {loading ? <div style={{ padding: '20px 72px' }}>Loading list details...</div> : listDetails.map(item => <GridCard key={item.id} item={item} onSelect={onSelect} />)}
+            {loading ? <div style={{ padding: '20px var(--pad)' }}>Loading list details...</div> : listDetails.map(item => <GridCard key={item.id} item={item} onSelect={onSelect} />)}
           </div>
         </>
       )}

@@ -6,37 +6,6 @@ import { getProviders } from '../lib/players';
 import Navbar from '../components/Navbar';
 import { useAuth } from '../context/AuthContext';
 
-const selectStyle = {
-  background: 'var(--gray)',
-  border: '1px solid rgba(255,255,255,0.1)',
-  color: 'white',
-  padding: '8px 12px',
-  outline: 'none',
-  cursor: 'pointer'
-};
-
-const labelStyle = {
-  fontFamily: 'var(--mono)',
-  fontSize: '9px',
-  color: 'var(--text-dim)',
-  marginBottom: '8px',
-  textTransform: 'uppercase',
-  letterSpacing: '1px'
-};
-
-const miniBtnStyle = {
-  background: 'none',
-  border: '1px solid rgba(255,255,255,0.2)',
-  color: 'var(--text-dim)',
-  padding: '8px 12px',
-  outline: 'none',
-  cursor: 'pointer',
-  fontFamily: 'var(--mono)',
-  fontSize: '11px',
-  textTransform: 'uppercase',
-  letterSpacing: '1px'
-};
-
 export default function Watch() {
   const { mediaType, tmdbId, episode: routeEpisode, lang: routeLang } = useParams();
   const navigate = useNavigate();
@@ -64,6 +33,7 @@ export default function Watch() {
   const [notice, setNotice] = useState(null);
   const [exhausted, setExhausted] = useState(false);
 
+
   const healthyRef = useRef(false);
   const suppressUrl = useRef(false);
   const failoverRef = useRef(() => {});
@@ -83,7 +53,7 @@ export default function Watch() {
       return;
     }
     const idx = Math.min(providerIndex, providers.length - 1);
-    setFrameUrl(providers[idx]?.url || '');
+    setFrameUrl(providers[idx]?.url || '');``
     setExhausted(false);
   }, [providers, providerIndex]);
 
@@ -275,9 +245,9 @@ export default function Watch() {
   return (
     <>
       <Navbar />
-      <div className="watch-container" style={{ paddingTop: '80px', height: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#000' }}>
+      <div className="watch-container">
 
-        <div className="player-wrapper" style={{ flex: 1, position: 'relative', width: '100%', backgroundColor: '#000' }}>
+        <div className="player-wrapper">
           {frameUrl && !exhausted && (
             <iframe
               key={`${providerIndex}-${reloadKey}`}
@@ -325,43 +295,36 @@ export default function Watch() {
           )}
         </div>
 
-        <div className="watch-info" style={{ padding: '24px 72px', backgroundColor: 'var(--bg)', flexShrink: 0 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '24px', flexWrap: 'wrap' }}>
-            <div>
-              <button
-                onClick={() => navigate(-1)}
-                style={{ background: 'none', border: 'none', color: 'var(--text-dim)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '2px', cursor: 'pointer', marginBottom: '16px' }}
-              >
-                ← Back
-              </button>
-              <h1 style={{ fontFamily: 'var(--display)', fontSize: '32px', marginBottom: '8px' }}>
-                {details.title || details.name}
-              </h1>
+        <div className="watch-info">
+          <div className="watch-info-top">
+            <div className="watch-info-head">
+              <button className="watch-back" onClick={() => navigate(-1)}>← Back</button>
+              <h1 className="watch-title">{details.title || details.name}</h1>
               {mediaType === 'tv' && (
-                <div style={{ fontFamily: 'var(--mono)', color: 'var(--text-dim)', fontSize: '12px' }}>
+                <div className="watch-meta">
                   Season {season} · Episode {episode}
                   {seasonData?.episodes?.find(e => e.episode_number === episode)?.name &&
-                    ` - ${seasonData.episodes.find(e => e.episode_number === episode).name}`}
+                    ` — ${seasonData.episodes.find(e => e.episode_number === episode).name}`}
                   {seasonError && ' · episode list unavailable'}
                 </div>
               )}
               {isAnime && (
-                <div style={{ fontFamily: 'var(--mono)', color: 'var(--text-dim)', fontSize: '12px' }}>
+                <div className="watch-meta">
                   Episode {animeEp} · {animeLang.toUpperCase()}
                   {details.episodes ? ` · ${details.episodes} episodes` : ''}
                 </div>
               )}
             </div>
 
-            <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-end', flexWrap: 'wrap' }}>
+            <div className="watch-controls">
               {mediaType === 'tv' && (
                 <>
-                  <div>
-                    <div style={labelStyle}>Season</div>
+                  <div className="watch-field">
+                    <div className="watch-field-label">Season</div>
                     <select
+                      className="watch-select"
                       value={season}
                       onChange={(e) => setSeason(parseInt(e.target.value))}
-                      style={selectStyle}
                     >
                       {details.seasons?.filter(s => s.season_number > 0).map(s => (
                         <option key={s.season_number} value={s.season_number}>Season {s.season_number}</option>
@@ -369,13 +332,13 @@ export default function Watch() {
                     </select>
                   </div>
 
-                  <div>
-                    <div style={labelStyle}>Episode</div>
+                  <div className="watch-field">
+                    <div className="watch-field-label">Episode</div>
                     <select
+                      className="watch-select"
                       value={episode}
                       disabled={!seasonData?.episodes}
                       onChange={(e) => setEpisode(parseInt(e.target.value))}
-                      style={selectStyle}
                     >
                       {seasonData?.episodes
                         ? seasonData.episodes.map(e => (
@@ -389,13 +352,13 @@ export default function Watch() {
 
               {isAnime && (
                 <>
-                  <div>
-                    <div style={labelStyle}>Episode</div>
+                  <div className="watch-field">
+                    <div className="watch-field-label">Episode</div>
                     {details.episodes > 0 ? (
                       <select
+                        className="watch-select"
                         value={animeEp}
                         onChange={(e) => gotoAnime(parseInt(e.target.value), animeLang)}
-                        style={selectStyle}
                       >
                         {Array.from({ length: details.episodes }, (_, i) => i + 1).map(n => (
                           <option key={n} value={n}>Ep {n}</option>
@@ -405,28 +368,24 @@ export default function Watch() {
                       <input
                         type="number"
                         min={1}
+                        className="watch-select watch-num-input"
                         value={animeEp}
                         onChange={(e) => {
                           const n = parseInt(e.target.value, 10);
                           if (n >= 1) gotoAnime(n, animeLang);
                         }}
-                        style={{ ...selectStyle, width: '84px' }}
                       />
                     )}
                   </div>
 
-                  <div>
-                    <div style={labelStyle}>Audio</div>
-                    <div style={{ display: 'flex', gap: '6px' }}>
+                  <div className="watch-field">
+                    <div className="watch-field-label">Audio</div>
+                    <div className="watch-btn-row">
                       {['sub', 'dub'].map(l => (
                         <button
                           key={l}
                           onClick={() => gotoAnime(animeEp, l)}
-                          style={{
-                            ...miniBtnStyle,
-                            borderColor: animeLang === l ? 'var(--red)' : undefined,
-                            color: animeLang === l ? 'var(--white)' : undefined
-                          }}
+                          className={`watch-mini-btn${animeLang === l ? ' active' : ''}`}
                         >
                           {l}
                         </button>
@@ -436,18 +395,14 @@ export default function Watch() {
                 </>
               )}
 
-              <div>
-                <div style={labelStyle}>Source</div>
-                <div style={{ display: 'flex', gap: '6px' }}>
+              <div className="watch-field watch-field--wide">
+                <div className="watch-field-label">Source</div>
+                <div className="watch-btn-row">
                   {providers.map((p, i) => (
                     <button
                       key={p.id}
                       onClick={() => switchProvider(i)}
-                      style={{
-                        ...miniBtnStyle,
-                        borderColor: i === providerIndex ? 'var(--red)' : undefined,
-                        color: i === providerIndex ? 'var(--white)' : undefined
-                      }}
+                      className={`watch-mini-btn${i === providerIndex ? ' active' : ''}`}
                     >
                       {p.label}
                     </button>
@@ -455,9 +410,9 @@ export default function Watch() {
                 </div>
               </div>
 
-              <div>
-                <div style={labelStyle}>Player</div>
-                <button onClick={hardReload} style={miniBtnStyle}>Reload</button>
+              <div className="watch-field">
+                <div className="watch-field-label">Player</div>
+                <button onClick={hardReload} className="watch-mini-btn">Reload</button>
               </div>
             </div>
           </div>

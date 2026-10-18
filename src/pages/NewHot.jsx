@@ -73,8 +73,8 @@ export default function NewHot({ onSelect }) {
         </button>
       </div>
 
-      {loading && <div style={{ padding: '40px 72px' }}>Loading...</div>}
-      {loadError && <div style={{ padding: '0 72px 24px', color: 'var(--text-dim)', fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '2px' }}>{loadError}</div>}
+      {loading && <div style={{ padding: '40px var(--pad)' }}>Loading...</div>}
+      {loadError && <div style={{ padding: '0 var(--pad) 24px', color: 'var(--text-dim)', fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '2px' }}>{loadError}</div>}
 
       {/* EVERYONE'S WATCHING */}
       {!loading && tab === 'watching' && (
@@ -132,7 +132,7 @@ export default function NewHot({ onSelect }) {
       {/* TOP 10 */}
       {!loading && tab === 'top10' && (
         <div className="reveal">
-          <div style={{ padding: '0 72px 20px', fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '3px', textTransform: 'uppercase', color: 'var(--text-dim)' }}>
+          <div style={{ padding: '0 var(--pad) 20px', fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '3px', textTransform: 'uppercase', color: 'var(--text-dim)' }}>
             Updated daily based on viewing hours
           </div>
           <div className="content-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))' }}>
@@ -149,7 +149,7 @@ export default function NewHot({ onSelect }) {
                   <img src={item.img} alt={item.title} />
                   <div className="grid-card-overlay">
                     <div className="grid-card-title">{item.title}</div>
-                    <div className="grid-card-meta"><span className="match">{item.match}/100 Rating</span> · {item.year}</div>
+                    <div className="grid-card-meta"><span className="match">{(item.match / 10).toFixed(1)}/10 Rating</span> · {item.year}</div>
                   </div>
                 </div>
               </div>

@@ -84,7 +84,7 @@ export default function Films({ onSelect }) {
           {featured && (
             <>
               <div className="hero-meta">
-                <span className="match">{featured.match}/100 Rating</span>
+                <span className="match">{(featured.match / 10).toFixed(1)}/10 Rating</span>
                 <span className="dot" />
                 <span>{featured.year}</span>
               </div>
@@ -119,7 +119,7 @@ export default function Films({ onSelect }) {
       )}
 
       {/* FILTERS + FULL GRID */}
-      <div style={{ padding: '16px 72px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
+      <div style={{ padding: '16px var(--pad) 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
         <div className="filter-bar" style={{ padding: 0 }}>
           {GENRES.map(g => (
             <button key={g} className={`filter-tab${genre === g ? ' active' : ''}`} onClick={() => setGenre(g)}>{g}</button>
@@ -133,12 +133,12 @@ export default function Films({ onSelect }) {
         </select>
       </div>
 
-      <div style={{ padding: '12px 72px 0', fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '4px', textTransform: 'uppercase', color: 'var(--text-dim)' }}>
+      <div style={{ padding: '12px var(--pad) 0', fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '4px', textTransform: 'uppercase', color: 'var(--text-dim)' }}>
         {loading ? 'Loading...' : `${films.length} films found`}
       </div>
 
       {loadError && (
-        <div style={{ padding: '0 72px', color: 'var(--text-dim)', fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '2px' }}>{loadError}</div>
+        <div style={{ padding: '0 var(--pad)', color: 'var(--text-dim)', fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '2px' }}>{loadError}</div>
       )}
       <div className="content-grid reveal" style={{ marginTop: '14px' }}>
         {films.map(item => <GridCard key={item.id} item={item} onSelect={onSelect} />)}

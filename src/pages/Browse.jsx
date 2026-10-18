@@ -70,7 +70,7 @@ export default function Browse({ onSelect }) {
   return (
     <div className="page-container">
       {/* HEADER */}
-      <div style={{ paddingTop: '110px', paddingBottom: '48px', paddingLeft: '72px', paddingRight: '72px', borderBottom: '1px solid rgba(255,255,255,.06)' }}>
+      <div style={{ paddingTop: '110px', paddingBottom: '48px', paddingLeft: 'var(--pad)', paddingRight: 'var(--pad)', borderBottom: '1px solid rgba(255,255,255,.06)' }}>
         <div style={{ fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '4px', textTransform: 'uppercase', color: 'var(--red)', marginBottom: '10px' }}>Explore</div>
         <h1 style={{ fontFamily: 'var(--display)', fontSize: 'clamp(52px,7vw,90px)', lineHeight: '.92', marginBottom: '14px' }}>BROWSE</h1>
         <p style={{ fontFamily: 'var(--mono)', fontSize: '10px', color: 'var(--text-dim)', letterSpacing: '2px', textTransform: 'uppercase' }}>
@@ -81,10 +81,10 @@ export default function Browse({ onSelect }) {
       {!activeGenre ? (
         <>
           {/* GENRE GRID */}
-          <div style={{ padding: '40px 72px 16px', fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '4px', textTransform: 'uppercase', color: 'var(--text-dim)' }}>
+          <div style={{ padding: '40px var(--pad) 16px', fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '4px', textTransform: 'uppercase', color: 'var(--text-dim)' }}>
             Select a genre
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '6px', padding: '0 72px 72px' }} className="reveal">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '6px', padding: '0 var(--pad) 72px' }} className="reveal">
             {GENRES.map(genre => (
               <div
                 key={genre}
@@ -117,7 +117,7 @@ export default function Browse({ onSelect }) {
       ) : (
         <>
           {/* GENRE HEADER */}
-          <div style={{ padding: '32px 72px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ padding: '32px var(--pad) 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div>
               <div style={{ fontFamily: 'var(--mono)', fontSize: '9px', letterSpacing: '3px', textTransform: 'uppercase', color: 'var(--text-dim)', marginBottom: '8px' }}>Genre</div>
               <h2 style={{ fontFamily: 'var(--display)', fontSize: '52px' }}>{activeGenre}</h2>
@@ -131,7 +131,7 @@ export default function Browse({ onSelect }) {
           </div>
 
           {/* OTHER GENRES */}
-          <div style={{ padding: '20px 72px 0', display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+          <div style={{ padding: '20px var(--pad) 0', display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
             {GENRES.filter(g => g !== activeGenre).slice(0, 8).map(g => (
               <button
                 key={g}
@@ -143,7 +143,7 @@ export default function Browse({ onSelect }) {
             ))}
           </div>
 
-          <div style={{ padding: '12px 72px 0', fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '3px', textTransform: 'uppercase', color: 'var(--text-dim)' }}>
+          <div style={{ padding: '12px var(--pad) 0', fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '3px', textTransform: 'uppercase', color: 'var(--text-dim)' }}>
             {loading ? 'Loading...' : loadError || `${items.length} top results`}
           </div>
 

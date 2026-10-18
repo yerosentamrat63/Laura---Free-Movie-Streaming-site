@@ -1,10 +1,33 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+const finePointer = () =>
+  typeof window !== 'undefined' &&
+  window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
 export default function Cursor() {
   const cursorRef = useRef(null);
+  const [enabled, setEnabled] = useState(finePointer);
 
   useEffect(() => {
+    const onTouch = () => setEnabled(false);
+    window.addEventListener('touchstart', onTouch, { once: true, passive: true });
+    return () => window.removeEventListener('touchstart', onTouch);
+  }, []);
+
+  useEffect(() => {
+    if (enabled) {
+      document.documentElement.classList.remove('no-custom-cursor');
+      return undefined;
+    }
+    document.documentElement.classList.add('no-custom-cursor');
+    return () => document.documentElement.classList.remove('no-custom-cursor');
+  }, [enabled]);
+
+  useEffect(() => {
+    if (!enabled) return undefined;
     const cursor = cursorRef.current;
+    if (!cursor) return undefined;
+
     const onMove = (e) => {
       cursor.style.left = e.clientX + 'px';
       cursor.style.top  = e.clientY + 'px';
@@ -37,7 +60,9 @@ export default function Cursor() {
       document.removeEventListener('mouseup',   onUp);
       mo.disconnect();
     };
-  }, []);
+  }, [enabled]);
+
+  if (!enabled) return null;
 
   return <div id="cursor" ref={cursorRef} />;
 }

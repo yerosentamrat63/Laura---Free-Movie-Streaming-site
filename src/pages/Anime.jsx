@@ -93,7 +93,7 @@ export default function Anime() {
         </div>
       </section>
 
-      <div className="filter-bar" style={{ padding: '0 72px', display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap', marginBottom: '24px' }}>
+      <div className="filter-bar" style={{ padding: '0 var(--pad)', display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap', marginBottom: '24px' }}>
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
@@ -148,11 +148,11 @@ export default function Anime() {
         </div>
       )}
 
-      {loading && <div style={{ padding: '40px 72px', fontFamily: 'var(--mono)', fontSize: '11px', letterSpacing: '2px', color: 'var(--text-dim)' }}>LOADING…</div>}
-      {loadError && <div style={{ padding: '0 72px 24px', color: 'var(--text-dim)', fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '2px' }}>{loadError}</div>}
+      {loading && <div style={{ padding: '40px var(--pad)', fontFamily: 'var(--mono)', fontSize: '11px', letterSpacing: '2px', color: 'var(--text-dim)' }}>LOADING…</div>}
+      {loadError && <div style={{ padding: '0 var(--pad) 24px', color: 'var(--text-dim)', fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '2px' }}>{loadError}</div>}
 
       {!loading && !loadError && items.length === 0 && (
-        <div style={{ padding: '0 72px 48px', fontFamily: 'var(--mono)', fontSize: '11px', letterSpacing: '2px', color: 'var(--text-dim)' }}>
+        <div style={{ padding: '0 var(--pad) 48px', fontFamily: 'var(--mono)', fontSize: '11px', letterSpacing: '2px', color: 'var(--text-dim)' }}>
           NOTHING FOUND{search ? ` FOR "${search}"` : ''}.
         </div>
       )}
@@ -166,7 +166,7 @@ export default function Anime() {
                 <div className="grid-card-overlay">
                   <div className="grid-card-title">{item.title}</div>
                   <div className="grid-card-meta">
-                    <span className="match">{item.match}/100 Rating</span> · {item.year || '—'}
+                    <span className="match">{(item.match / 10).toFixed(1)}/10 Rating</span> · {item.year || '—'}
                     {item.episodes ? ` · ${item.episodes} EP` : ''}
                   </div>
                   <div className="grid-card-meta" style={{ marginTop: '4px', opacity: .7 }}>

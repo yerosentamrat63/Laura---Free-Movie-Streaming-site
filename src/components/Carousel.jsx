@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useTapReveal, isTouchDevice } from '../lib/useTapReveal';
 
 export function Carousel({ title, subtitle, items, onSelect, wide, numbered, children }) {
   const ref = useRef(null);
@@ -29,8 +30,16 @@ export function Carousel({ title, subtitle, items, onSelect, wide, numbered, chi
 
 export function Card({ item, onSelect, wide }) {
   const { toggleMyList, isInList } = useAuth();
+  const { ref, open, setOpen } = useTapReveal();
   return (
-    <div className={`card${wide ? ' wide' : ''}`} onClick={() => onSelect(item)}>
+    <div
+      ref={ref}
+      className={`card${wide ? ' wide' : ''}${open ? ' open' : ''}`}
+      onClick={() => {
+        if (isTouchDevice() && !open) { setOpen(true); return; }
+        onSelect(item);
+      }}
+    >
       <img src={item.img} alt={item.title} loading="lazy" />
       <div className="card-overlay">
         <div className="card-title">{item.title}</div>
@@ -41,8 +50,7 @@ export function Card({ item, onSelect, wide }) {
           </div>
         </div>
         <div className="card-meta">
-          <span className="match">{typeof item.match === 'number' ? `${item.match}/100` : item.match}</span>
-          {item.type === 'tv' ? `${item.seasons}S` : item.duration}
+          <span className="match">{typeof item.match === 'number' ? `${(item.match / 10).toFixed(1)}/10` : item.match}</span>
         </div>
       </div>
     </div>
@@ -60,8 +68,16 @@ export function NumCard({ item, num, onSelect }) {
 
 export function GridCard({ item, onSelect }) {
   const { toggleMyList, isInList } = useAuth();
+  const { ref, open, setOpen } = useTapReveal();
   return (
-    <div className="grid-card" onClick={() => onSelect(item)}>
+    <div
+      ref={ref}
+      className={`grid-card${open ? ' open' : ''}`}
+      onClick={() => {
+        if (isTouchDevice() && !open) { setOpen(true); return; }
+        onSelect(item);
+      }}
+    >
       <img src={item.img} alt={item.title} loading="lazy" />
       <div className="grid-card-overlay">
         <div className="grid-card-title">{item.title}</div>
@@ -72,8 +88,8 @@ export function GridCard({ item, onSelect }) {
           </div>
         </div>
         <div className="grid-card-meta">
-          <span className="match">{typeof item.match === 'number' ? `${item.match}/100` : item.match}</span>
-          {item.year} · {item.genre?.[0]}
+          <span className="match">{typeof item.match === 'number' ? `${(item.match / 10).toFixed(1)}/10` : item.match}</span>
+          {item.year ? ` · ${item.year}` : ''}
         </div>
       </div>
     </div>

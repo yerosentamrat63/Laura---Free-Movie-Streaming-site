@@ -62,7 +62,7 @@ export default function Modal({ item, onClose }) {
         <div className="modal-body">
           <div className="modal-title">{item.title}</div>
           <div className="modal-meta">
-            <span className="match">{item.match || 0}/100 Rating</span>
+            <span className="match">{typeof item.match === 'number' ? `${(item.match / 10).toFixed(1)}/10` : item.match} Rating</span>
             <span>{item.year || ''}</span>
             <span>{item.type === 'tv' ? (item.seasons ? `${item.seasons} Season${item.seasons > 1 ? 's' : ''}` : 'Series') : (item.duration || 'Film')}</span>
           </div>
