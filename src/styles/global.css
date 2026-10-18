@@ -2649,6 +2649,78 @@ html.no-custom-cursor .card {
   }
 }
 
+/* Livery finish */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--black);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gray-light);
+  border: 1px solid var(--black);
+  border-radius: var(--radius-control);
+}
+
+.modal-overlay,
+.confirm-overlay,
+.search-overlay {
+  background: rgba(3, 14, 17, .72);
+  backdrop-filter: blur(12px);
+}
+
+.modal,
+.confirm-box,
+.signin-card,
+.search-panel {
+  background: var(--gray);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-raised);
+}
+
+.modal-hero,
+.feature-item,
+.hot-thumb,
+.grid-card,
+.card {
+  border-radius: var(--radius-card);
+}
+
+.hero-bg,
+.feature-item img,
+.grid-card img,
+.card img,
+.hot-thumb img {
+  filter: saturate(.86);
+}
+
+.feature-name {
+  background: linear-gradient(100deg, var(--white), #b9d4cf);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.hero-meta,
+.grid-card-meta,
+.watch-meta,
+.footer-copy {
+  font-variant-numeric: tabular-nums;
+}
+
+.carousel,
+.tab-bar {
+  scrollbar-color: var(--gray-light) transparent;
+}
+
+.hot-item {
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-raised);
+}
+
 @media (max-width: 420px) {
   :root {
     --pad: 14px;
