@@ -2693,3 +2693,71 @@ html.no-custom-cursor .card {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
+/* Livery component foundations */
+button {
+  border-radius: var(--radius-control);
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.btn-play,
+.btn-info,
+.btn-red,
+.nav-btn,
+.modal-list-btn,
+.confirm-btn,
+.tab,
+.watch-mini-btn {
+  border-radius: var(--radius-control);
+  font-family: var(--body);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.btn-play,
+.btn-red,
+.nav-btn:not(.outline),
+.confirm-btn:not(.ghost) {
+  background: var(--red);
+  color: var(--black);
+  border: 1px solid var(--red);
+}
+
+.btn-info,
+.nav-btn.outline,
+.modal-list-btn,
+.confirm-btn.ghost,
+.tab,
+.watch-mini-btn {
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  color: var(--white);
+}
+
+.nav-avatar {
+  border-radius: 50%;
+}
+
+.modal,
+.confirm-box,
+.search-box,
+.signin-card,
+.genre-card,
+.hot-item {
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-raised);
+}
+
+.nav-btn:hover,
+.btn-play:hover,
+.btn-info:hover,
+.btn-red:hover,
+.modal-list-btn:hover,
+.confirm-btn:hover,
+.tab:hover,
+.watch-mini-btn:hover {
+  filter: brightness(1.08);
+}
